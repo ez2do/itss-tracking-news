@@ -1,0 +1,80 @@
+{
+  "Tin mới nhất": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/tin-moi-nhat.rss"
+    }
+  ],
+  "Tin xem nhiều": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/tin-xem-nhieu.rss"
+    }
+  ],
+  "Tin nổi bật": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/tin-noi-bat.rss"
+    }
+  ],
+  "Thế giới": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/the-gioi.rss"
+    }
+  ],
+  "Thời sự": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/thoi-su.rss"
+    }
+  ],
+  "Kinh tế & Kinh doanh": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/kinh-doanh.rss"
+    }
+  ],
+  "Giải trí": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/giai-tri.rss"
+    }
+  ],
+  "Thể thao": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/the-thao.rss"
+    }
+  ],
+  "Giáo dực": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/giao-duc.rss"
+    }
+  ],
+  "Sức khỏe & Đời sống": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/gia-dinh.rss"
+    },
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/suc-khoe.rss"
+    }
+  ],
+  "Khoa học & Công nghệ": [
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/khoa-hoc.rss"
+    },
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/so-hoa.rss"
+    },
+    {
+      "source": "vnexpress",
+      "link": "https://vnexpress.net/rss/oto-xe-may.rss"
+    }
+  ]
+}
