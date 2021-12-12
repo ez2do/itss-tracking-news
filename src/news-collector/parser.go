@@ -22,5 +22,5 @@ func NewCollector(categories []*Category) *Collector {
 }
 
 func (*Collector) CollectAll() {
-	for _,
+
 }
