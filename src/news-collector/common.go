@@ -2,21 +2,10 @@ package news_collector
 
 import (
 	"encoding/json"
-	"gorm.io/gorm"
 	"os"
 )
 
-type Repository struct {
-	db *gorm.DB
-}
-
-func NewRepository(db *gorm.DB) *Repository {
-	return &Repository{
-		db: db,
-	}
-}
-
-func (r *Repository) ReadSources(filePath string) ([]*Category, error) {
+func ReadSources(filePath string) ([]*Category, error) {
 	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
 	if err != nil {
 		return nil, err

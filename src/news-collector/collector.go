@@ -9,11 +9,6 @@ type Collector struct {
 	Categories []*Category
 }
 
-type Category struct {
-	Source string `json:"source"`
-	Link   string `json:"link"`
-}
-
 func NewCollector(categories []*Category) *Collector {
 	return &Collector{
 		Parser:     gofeed.NewParser(),
@@ -21,6 +16,14 @@ func NewCollector(categories []*Category) *Collector {
 	}
 }
 
-func (*Collector) CollectAll() {
-
+func (c *Collector) CollectAll() ([]*gofeed.Feed, error) {
+	feeds := make([]*gofeed.Feed, 0)
+	for _, category := range c.Categories {
+		feed, err := c.Parser.ParseURL(category.Link)
+		if err != nil {
+			return nil, err
+		}
+		feeds = append(feeds, feed)
+	}
+	return feeds, nil
 }
