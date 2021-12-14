@@ -1,4 +1,4 @@
-package news_collector
+package repository
 
 import (
 	"gorm.io/driver/sqlite"

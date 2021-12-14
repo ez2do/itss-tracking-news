@@ -6,7 +6,8 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
-	"tracking-news/src/news-collector"
+	news_collector2 "tracking-news/news-collector/model"
+	"tracking-news/news-collector/repository"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 		log.Panicln(err)
 	}
 
-	r := news_collector.NewRepository(db)
+	r := repository.NewRepository(db)
 	err = migrateCategories(r)
 	if err != nil {
 		log.Panicln(err)
@@ -31,7 +32,8 @@ func migrateSchemas(db *gorm.DB) error {
 	migrator := db.Migrator()
 
 	dropModels := []interface{}{
-		&news_collector.Category{},
+		&news_collector2.Article{},
+		&news_collector2.Category{},
 	}
 
 	for _, model := range dropModels {
@@ -39,8 +41,8 @@ func migrateSchemas(db *gorm.DB) error {
 	}
 
 	models := []interface{}{
-		&news_collector.Article{},
-		&news_collector.Category{},
+		&news_collector2.Article{},
+		&news_collector2.Category{},
 	}
 
 	migrateModels := make([]interface{}, 0)
@@ -53,7 +55,7 @@ func migrateSchemas(db *gorm.DB) error {
 	return db.AutoMigrate(migrateModels...)
 }
 
-func migrateCategories(r *news_collector.Repository) error {
+func migrateCategories(r *repository.Repository) error {
 	categories, err := readSources("sources.json")
 	if err != nil {
 		return err
@@ -61,19 +63,19 @@ func migrateCategories(r *news_collector.Repository) error {
 	return r.UpsertCategories(categories)
 }
 
-func readSources(filePath string) ([]*news_collector.Category, error) {
+func readSources(filePath string) ([]*news_collector2.Category, error) {
 	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
 
-	var data map[string][]*news_collector.Category
+	var data map[string][]*news_collector2.Category
 	err = json.NewDecoder(f).Decode(&data)
 	if err != nil {
 		return nil, err
 	}
 
-	categories := make([]*news_collector.Category, 0)
+	categories := make([]*news_collector2.Category, 0)
 	for categoryName, categoryList := range data {
 		for _, category := range categoryList {
 			category.Name = categoryName

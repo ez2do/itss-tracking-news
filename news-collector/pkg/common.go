@@ -1,23 +1,24 @@
-package news_collector
+package pkg
 
 import (
 	"encoding/json"
 	"os"
+	"tracking-news/news-collector/model"
 )
 
-func ReadSources(filePath string) ([]*Category, error) {
+func ReadSources(filePath string) ([]*model.Category, error) {
 	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
 
-	var data map[string][]*Category
+	var data map[string][]*model.Category
 	err = json.NewDecoder(f).Decode(&data)
 	if err != nil {
 		return nil, err
 	}
 
-	categories := make([]*Category, 0)
+	categories := make([]*model.Category, 0)
 	for categoryName, categoryList := range data {
 		for _, category := range categoryList {
 			category.Name = categoryName

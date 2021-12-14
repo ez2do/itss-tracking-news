@@ -1,4 +1,4 @@
-package news_collector
+package pkg
 
 const (
 	DBPath = "news.db"
