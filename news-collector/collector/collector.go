@@ -1,22 +1,24 @@
-package news_collector
+package collector
 
 import (
 	"github.com/mmcdole/gofeed"
+	"tracking-news/news-collector/model"
+	"tracking-news/news-collector/repository"
 )
 
 type Collector struct {
 	Parser     *gofeed.Parser
-	Repository *Repository
+	Repository *repository.Repository
 }
 
-func NewCollector(repository *Repository) *Collector {
+func NewCollector(repository *repository.Repository) *Collector {
 	return &Collector{
 		Parser:     gofeed.NewParser(),
 		Repository: repository,
 	}
 }
 
-func (c *Collector) CollectAll(categories []*Category) error {
+func (c *Collector) CollectAll(categories []*model.Category) error {
 	for _, category := range categories {
 		articles, err := c.collectByCategory(category)
 		if err != nil {
@@ -30,8 +32,8 @@ func (c *Collector) CollectAll(categories []*Category) error {
 	return nil
 }
 
-func (c *Collector) collectByCategory(category *Category) ([]*Article, error) {
-	articles := make([]*Article, 0)
+func (c *Collector) collectByCategory(category *model.Category) ([]*model.Article, error) {
+	articles := make([]*model.Article, 0)
 	feed, err := c.Parser.ParseURL(category.Link)
 	if err != nil {
 		return nil, err
@@ -43,7 +45,7 @@ func (c *Collector) collectByCategory(category *Category) ([]*Article, error) {
 	return articles, nil
 }
 
-func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string) *Article {
+func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string) *model.Article {
 	link := item.Link
 	if link == "" {
 		for _, l := range item.Links {
@@ -58,10 +60,9 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 		image = item.Image.URL
 	}
 
-	return &Article{
+	return &model.Article{
 		Title:           item.Title,
 		Description:     item.Description,
-		Content:         item.Content,
 		Link:            link,
 		Published:       item.Published,
 		PublishedParsed: item.PublishedParsed,

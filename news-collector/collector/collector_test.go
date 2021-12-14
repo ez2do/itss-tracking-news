@@ -1,8 +1,20 @@
-package news_collector
+package collector
 
 import (
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"log"
 	"testing"
+	"tracking-news/news-collector/repository"
 )
+
+func setupRepo() *repository.Repository {
+	db, err := gorm.Open(sqlite.Open("../../news.db"), &gorm.Config{})
+	if err != nil {
+		log.Fatal(err)
+	}
+	return repository.NewRepository(db)
+}
 
 func setupCollector() *Collector {
 	r := setupRepo()
