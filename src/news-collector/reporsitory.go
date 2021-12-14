@@ -1,9 +1,8 @@
 package news_collector
 
 import (
-	"encoding/json"
 	"gorm.io/gorm"
-	"os"
+	"gorm.io/gorm/clause"
 )
 
 type Repository struct {
@@ -16,25 +15,13 @@ func NewRepository(db *gorm.DB) *Repository {
 	}
 }
 
-func (r *Repository) ReadSources(filePath string) ([]*Category, error) {
-	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
-	if err != nil {
-		return nil, err
-	}
-
-	var data map[string][]*Category
-	err = json.NewDecoder(f).Decode(&data)
-	if err != nil {
-		return nil, err
-	}
-
-	categories := make([]*Category, 0)
-	for categoryName, categoryList := range data {
-		for _, category := range categoryList {
-			category.Name = categoryName
-			categories = append(categories, category)
-		}
-	}
-
-	return categories, nil
+func (r *Repository) UpsertCategories(categories []*Category) error {
+	return r.db.Model(&Category{}).
+		Clauses(clause.OnConflict{
+			Columns: []clause.Column{
+				{Name: "link"},
+			},
+			DoUpdates: clause.AssignmentColumns([]string{"name", "source"}),
+		}).
+		Create(&categories).Error
 }

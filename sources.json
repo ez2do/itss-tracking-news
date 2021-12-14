@@ -1,7 +1,7 @@
 {
   "Thế giới": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/the-gioi.rss"
     },
     {
@@ -15,7 +15,7 @@
   ],
   "Thời sự": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/thoi-su.rss"
     },
     {
@@ -33,7 +33,7 @@
   ],
   "Tài chính & Kinh doanh": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/kinh-doanh.rss"
     },
     {
@@ -51,7 +51,7 @@
   ],
   "Giải trí": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/giai-tri.rss"
     },
     {
@@ -69,7 +69,7 @@
   ],
   "Thể thao": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/the-thao.rss"
     },
     {
@@ -87,7 +87,7 @@
   ],
   "Văn hóa & Giáo dục": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/giao-duc.rss"
     },
     {
@@ -113,11 +113,11 @@
   ],
   "Sức khỏe & Đời sống": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/gia-dinh.rss"
     },
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/suc-khoe.rss"
     },
     {
@@ -135,15 +135,15 @@
   ],
   "Khoa học & Công nghệ": [
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/khoa-hoc.rss"
     },
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/so-hoa.rss"
     },
     {
-      "source": "vnexpress",
+      "source": "VnExpress",
       "link": "https://vnexpress.net/rss/oto-xe-may.rss"
     },
     {
