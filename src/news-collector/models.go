@@ -5,9 +5,10 @@ import (
 )
 
 type Category struct {
-	Name   string `json:"name"`
-	Source string `json:"source"`
-	Link   string `json:"link" gorm:"index:category_link_IDX,unique"`
+	Name    string    `json:"name"`
+	Source  string    `json:"source"`
+	Link    string    `json:"link" gorm:"index:category_link_IDX,unique"`
+	LastRun time.Time `json:"lastRun"`
 }
 
 type Article struct {

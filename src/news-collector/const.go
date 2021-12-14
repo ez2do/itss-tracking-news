@@ -1,5 +1,5 @@
 package news_collector
 
 const (
-	DBPath = "../../news.db"
+	DBPath = "news.db"
 )

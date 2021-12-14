@@ -1,24 +1,24 @@
 package news_collector
 
 import (
-	"log"
 	"testing"
 )
 
 func setupCollector() *Collector {
-	categories, err := ReadSources("sources.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-	return NewCollector(categories)
+	r := setupRepo()
+	return NewCollector(r)
 }
 
 func TestCollector_CollectAll(t *testing.T) {
 	c := setupCollector()
-	feeds, err := c.CollectAll()
+	categories, err := c.Repository.GetAllCategories()
 	if err != nil {
 		t.Error(err)
 		return
 	}
-	t.Log(feeds)
+	err = c.CollectAll(categories)
+	if err != nil {
+		t.Error(err)
+		return
+	}
 }

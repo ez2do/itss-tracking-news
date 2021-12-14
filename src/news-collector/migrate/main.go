@@ -9,7 +9,7 @@ import (
 	"tracking-news/src/news-collector"
 )
 
-func main()  {
+func main() {
 	db, err := gorm.Open(sqlite.Open("news.db"), &gorm.Config{})
 	if err != nil {
 		log.Panicln(err)
@@ -28,6 +28,16 @@ func main()  {
 }
 
 func migrateSchemas(db *gorm.DB) error {
+	migrator := db.Migrator()
+
+	dropModels := []interface{}{
+		&news_collector.Category{},
+	}
+
+	for _, model := range dropModels {
+		migrator.DropTable(model)
+	}
+
 	models := []interface{}{
 		&news_collector.Article{},
 		&news_collector.Category{},
@@ -35,7 +45,7 @@ func migrateSchemas(db *gorm.DB) error {
 
 	migrateModels := make([]interface{}, 0)
 	for _, model := range models {
-		if !db.Migrator().HasTable(model) {
+		if !migrator.HasTable(model) {
 			migrateModels = append(migrateModels, model)
 		}
 	}

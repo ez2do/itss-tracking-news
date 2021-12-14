@@ -8,16 +8,16 @@ import (
 )
 
 func setupRepo() *Repository {
-	db, err := gorm.Open(sqlite.Open(DBPath), &gorm.Config{})
+	db, err := gorm.Open(sqlite.Open("../../news.db"), &gorm.Config{})
 	if err != nil {
 		log.Fatal(err)
 	}
 	return NewRepository(db)
 }
 
-func TestRepository_ReadSources(t *testing.T) {
+func TestRepository_GetAllCategories(t *testing.T) {
 	r := setupRepo()
-	categories, err := r.ReadSources("sources.json")
+	categories, err := r.GetAllCategories()
 	if err != nil {
 		t.Error(err)
 		return

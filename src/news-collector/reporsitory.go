@@ -25,3 +25,25 @@ func (r *Repository) UpsertCategories(categories []*Category) error {
 		}).
 		Create(&categories).Error
 }
+
+func (r *Repository) GetAllCategories() ([]*Category, error) {
+	categories := make([]*Category, 0)
+	err := r.db.Model(&Category{}).Find(&categories).Error
+	if err != nil {
+		return nil, err
+	}
+	return categories, nil
+}
+
+func (r *Repository) UpsertArticles(articles []*Article) error {
+	return r.db.Model(&Article{}).
+		Clauses(clause.OnConflict{
+			Columns: []clause.Column{
+				{Name: "link"},
+				{Name: "category"},
+				{Name: "source"},
+			},
+			DoNothing: true,
+		}).
+		Create(&articles).Error
+}
