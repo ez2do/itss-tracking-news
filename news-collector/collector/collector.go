@@ -2,7 +2,9 @@ package collector
 
 import (
 	"github.com/mmcdole/gofeed"
+	"time"
 	"tracking-news/news-collector/model"
+	"tracking-news/news-collector/pkg"
 	"tracking-news/news-collector/repository"
 )
 
@@ -55,9 +57,18 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 		}
 	}
 
+	extraData := model.ExtraData{}
+	for k, v := range item.Custom {
+		extraData[k] = v
+	}
+
 	var image string
-	if item.Image != nil {
+	if item.Image != nil && item.Image.URL != "" {
 		image = item.Image.URL
+	} else if extraData["image"] != "" {
+		image = extraData["image"]
+	} else {
+		image = pkg.ParseImageURL(item.Description)
 	}
 
 	return &model.Article{
@@ -67,7 +78,9 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 		Published:       item.Published,
 		PublishedParsed: item.PublishedParsed,
 		Image:           image,
+		ExtraData:       &extraData,
 		Category:        category,
 		Source:          source,
+		CreatedAt:       time.Now(),
 	}
 }
