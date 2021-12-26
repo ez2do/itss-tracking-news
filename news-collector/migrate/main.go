@@ -6,8 +6,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"os"
-	news_collector2 "tracking-news/news-collector/model"
-	"tracking-news/news-collector/repository"
+	newscollector "tracking-news/news-collector"
 )
 
 func main() {
@@ -21,7 +20,7 @@ func main() {
 		log.Panicln(err)
 	}
 
-	r := repository.NewRepository(db)
+	r := newscollector.NewRepository(db)
 	err = migrateCategories(r)
 	if err != nil {
 		log.Panicln(err)
@@ -32,8 +31,8 @@ func migrateSchemas(db *gorm.DB) error {
 	migrator := db.Migrator()
 
 	dropModels := []interface{}{
-		&news_collector2.Article{},
-		&news_collector2.Category{},
+		&newscollector.Article{},
+		&newscollector.Category{},
 	}
 
 	for _, model := range dropModels {
@@ -41,8 +40,9 @@ func migrateSchemas(db *gorm.DB) error {
 	}
 
 	models := []interface{}{
-		&news_collector2.Article{},
-		&news_collector2.Category{},
+		&newscollector.Article{},
+		&newscollector.Category{},
+		&newscollector.Setting{},
 	}
 
 	migrateModels := make([]interface{}, 0)
@@ -55,7 +55,7 @@ func migrateSchemas(db *gorm.DB) error {
 	return db.AutoMigrate(migrateModels...)
 }
 
-func migrateCategories(r *repository.Repository) error {
+func migrateCategories(r *newscollector.Repository) error {
 	categories, err := readSources("sources.json")
 	if err != nil {
 		return err
@@ -63,19 +63,19 @@ func migrateCategories(r *repository.Repository) error {
 	return r.UpsertCategories(categories)
 }
 
-func readSources(filePath string) ([]*news_collector2.Category, error) {
+func readSources(filePath string) ([]*newscollector.Category, error) {
 	f, err := os.OpenFile(filePath, os.O_RDONLY, 0644)
 	if err != nil {
 		return nil, err
 	}
 
-	var data map[string][]*news_collector2.Category
+	var data map[string][]*newscollector.Category
 	err = json.NewDecoder(f).Decode(&data)
 	if err != nil {
 		return nil, err
 	}
 
-	categories := make([]*news_collector2.Category, 0)
+	categories := make([]*newscollector.Category, 0)
 	for categoryName, categoryList := range data {
 		for _, category := range categoryList {
 			category.Name = categoryName

@@ -1,4 +1,4 @@
-package model
+package news_collector
 
 import (
 	"database/sql/driver"
@@ -10,6 +10,12 @@ import (
 
 type ExtraData map[string]string
 
+const DefaultDateTimeFormat = "2006-01-02 15:04:05"
+
+var (
+	ErrDataNotFound = errors.New("data not found")
+)
+
 type Category struct {
 	Name    string    `json:"name"`
 	Source  string    `json:"source"`
@@ -19,16 +25,22 @@ type Category struct {
 
 type Article struct {
 	ID              int64      `json:"id"`
-	Title           string     `json:"title,omitempty" gorm:"index"`
-	Description     string     `json:"description,omitempty" gorm:"index"`
-	Link            string     `json:"link,omitempty" gorm:"index:source_link_category_unique_IDX,unique"`
-	Published       string     `json:"published,omitempty"`
-	PublishedParsed *time.Time `json:"publishedParsed,omitempty" gorm:"index"`
-	Image           string     `json:"image,omitempty"`
+	Title           string     `json:"title" gorm:"index"`
+	Description     string     `json:"description" gorm:"index"`
+	Link            string     `json:"link" gorm:"index:source_link_category_unique_IDX,unique"`
+	Published       string     `json:"published"`
+	PublishedParsed time.Time  `json:"published_parsed" gorm:"index"`
+	Image           string     `json:"image"`
 	ExtraData       *ExtraData `json:"extra_data"`
 	Category        string     `json:"category" gorm:"index:source_link_category_unique_IDX,unique"`
 	Source          string     `json:"source" gorm:"index:source_link_category_unique_IDX,unique"`
-	CreatedAt       time.Time  `json:"created_at"`
+	UpdatedAt       time.Time  `json:"updated_at"`
+}
+
+type Setting struct {
+	Name        string `json:"name" gorm:"primaryKey"`
+	NumberValue int64  `json:"number_value"`
+	TextValue   string `json:"text_value"`
 }
 
 func (e *ExtraData) Scan(value interface{}) error {

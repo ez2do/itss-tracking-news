@@ -1,26 +1,24 @@
-package collector
+package news_collector
 
 import (
 	"github.com/mmcdole/gofeed"
 	"time"
-	"tracking-news/news-collector/model"
 	"tracking-news/news-collector/pkg"
-	"tracking-news/news-collector/repository"
 )
 
 type Collector struct {
 	Parser     *gofeed.Parser
-	Repository *repository.Repository
+	Repository *Repository
 }
 
-func NewCollector(repository *repository.Repository) *Collector {
+func NewCollector(repository *Repository) *Collector {
 	return &Collector{
 		Parser:     gofeed.NewParser(),
 		Repository: repository,
 	}
 }
 
-func (c *Collector) CollectAll(categories []*model.Category) error {
+func (c *Collector) CollectAll(categories []*Category) error {
 	for _, category := range categories {
 		articles, err := c.collectByCategory(category)
 		if err != nil {
@@ -34,8 +32,8 @@ func (c *Collector) CollectAll(categories []*model.Category) error {
 	return nil
 }
 
-func (c *Collector) collectByCategory(category *model.Category) ([]*model.Article, error) {
-	articles := make([]*model.Article, 0)
+func (c *Collector) collectByCategory(category *Category) ([]*Article, error) {
+	articles := make([]*Article, 0)
 	feed, err := c.Parser.ParseURL(category.Link)
 	if err != nil {
 		return nil, err
@@ -47,7 +45,7 @@ func (c *Collector) collectByCategory(category *model.Category) ([]*model.Articl
 	return articles, nil
 }
 
-func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string) *model.Article {
+func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string) *Article {
 	link := item.Link
 	if link == "" {
 		for _, l := range item.Links {
@@ -57,7 +55,7 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 		}
 	}
 
-	extraData := model.ExtraData{}
+	extraData := ExtraData{}
 	for k, v := range item.Custom {
 		extraData[k] = v
 	}
@@ -71,16 +69,29 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 		image = pkg.ParseImageURL(item.Description)
 	}
 
-	return &model.Article{
+	now := time.Now()
+	y, M, d := now.Date()
+	h, m, s := now.Hour(), now.Minute(), now.Second()
+
+	updatedAt := time.Date(y, M, d, h, m, s, 0, now.Location())
+	parsedTime := updatedAt
+	if item.PublishedParsed != nil {
+		parsedTime = item.PublishedParsed.In(now.Location())
+	}
+	return &Article{
 		Title:           item.Title,
 		Description:     item.Description,
 		Link:            link,
 		Published:       item.Published,
-		PublishedParsed: item.PublishedParsed,
+		PublishedParsed: parsedTime,
 		Image:           image,
 		ExtraData:       &extraData,
 		Category:        category,
 		Source:          source,
-		CreatedAt:       time.Now(),
+		UpdatedAt:       updatedAt,
 	}
 }
+
+//func (c *Collector) extractContent(raw string) string {
+//	r, _ := regexp.Compile("<(.*)>")
+//}
