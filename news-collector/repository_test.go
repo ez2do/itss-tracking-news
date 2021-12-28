@@ -42,5 +42,5 @@ func TestRepository_GetLatestArticle(t *testing.T) {
 		t.Error(err)
 		return
 	}
-	t.Log(article.CreatedAt)
+	t.Log(article.UpdatedAt)
 }

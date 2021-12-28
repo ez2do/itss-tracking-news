@@ -18,6 +18,8 @@ func main() {
 	repo := newscollector.NewRepository(db)
 	collector := newscollector.NewCollector(repo)
 
+	logger.Info("Start job")
+
 	gocron.Every(3).Hours().From(gocron.NextTick()).Do(func() {
 		updateIntervalHour := getUpdateIntervalHour(repo)
 		lastRun := getLastRun(repo)

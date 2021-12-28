@@ -65,7 +65,7 @@ func (r *Repository) GetSettingByName(name string) (*Setting, error) {
 
 func (r *Repository) GetLatestArticle() (*Article, error) {
 	article := &Article{}
-	err := r.db.Model(article).Order("created_at desc").First(article).Error
+	err := r.db.Model(article).Order("updated_at desc").First(article).Error
 
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
