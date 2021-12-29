@@ -77,6 +77,7 @@ func runWithRetry(f func() error, retryTimes int) (err error) {
 		if err == nil {
 			return nil
 		}
+		time.Sleep(5 * time.Second)
 	}
 	return
 }
