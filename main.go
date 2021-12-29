@@ -32,7 +32,9 @@ func main() {
 				logger.Errorw("Error get categories", "error", err)
 			}
 
-			err = collector.CollectAll(categories)
+			err = runWithRetry(func() error {
+				return collector.CollectAll(categories)
+			}, 5)
 			if err != nil {
 				logger.Errorw("Error when collect articles", "error", err)
 			}
@@ -67,4 +69,14 @@ func getLastRun(repo *newscollector.Repository) (lastRun time.Time) {
 		return
 	}
 	return latestArticle.UpdatedAt
+}
+
+func runWithRetry(f func() error, retryTimes int) (err error) {
+	for i := 0; i < retryTimes; i++ {
+		err = f()
+		if err == nil {
+			return nil
+		}
+	}
+	return
 }
