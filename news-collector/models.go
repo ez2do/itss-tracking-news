@@ -17,10 +17,10 @@ var (
 )
 
 type Category struct {
-	Name    string    `json:"name"`
-	Source  string    `json:"source"`
-	Link    string    `json:"link" gorm:"index:category_link_IDX,unique"`
-	LastRun time.Time `json:"last_run"`
+	ID     int64  `json:"id"`
+	Name   string `json:"name"`
+	Source string `json:"source"`
+	Link   string `json:"link" gorm:"index:category_link_IDX,unique"`
 }
 
 type Article struct {
