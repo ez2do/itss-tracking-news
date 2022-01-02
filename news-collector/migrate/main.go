@@ -31,7 +31,7 @@ func migrateSchemas(db *gorm.DB) error {
 	migrator := db.Migrator()
 
 	dropModels := []interface{}{
-		&newscollector.Article{},
+		//&newscollector.Article{},
 		&newscollector.Category{},
 	}
 
