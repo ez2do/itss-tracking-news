@@ -3,6 +3,7 @@ package news_collector
 import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
+	"time"
 )
 
 type Repository struct {
@@ -75,4 +76,9 @@ func (r *Repository) GetLatestArticle() (*Article, error) {
 	}
 
 	return article, nil
+}
+
+func (r *Repository) DeleteArticles(before time.Time) error {
+	return r.db.Model(&Article{}).
+		Where("updated_at < ?", before).Delete(&Article{}).Error
 }

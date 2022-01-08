@@ -21,8 +21,14 @@ func main() {
 	logger.Info("Start job")
 
 	gocron.Every(3).Hours().From(gocron.NextTick()).Do(func() {
+		deleteBefore := getDeleteBefore(repo)
 		updateIntervalHour := getUpdateIntervalHour(repo)
 		lastRun := getLastRun(repo)
+
+		err = repo.DeleteArticles(deleteBefore)
+		if err != nil {
+			logger.Errorw("Error when delete articles", "error", err)
+		}
 
 		if time.Now().Add(30*time.Minute).Sub(lastRun) > time.Hour*time.Duration(updateIntervalHour) {
 			logger.Infow("Start collecting", "interval hour", updateIntervalHour,
@@ -43,6 +49,20 @@ func main() {
 	})
 
 	<-gocron.Start()
+}
+
+func getDeleteBefore(repo *newscollector.Repository) (deleteBefore time.Time) {
+	deleteIntervalSetting, err := repo.GetSettingByName("delete_interval_day")
+	if err != nil {
+		logger.Errorw("Error when get update interval hour", "error", err)
+		return time.Now().AddDate(0, 0, -30)
+	}
+
+	if deleteIntervalSetting.NumberValue > 0 {
+		return time.Now().AddDate(0, 0, int(-deleteIntervalSetting.NumberValue))
+	}
+
+	return
 }
 
 func getUpdateIntervalHour(repo *newscollector.Repository) uint64 {

@@ -5,6 +5,7 @@ import (
 	"gorm.io/gorm"
 	"log"
 	"testing"
+	"time"
 )
 
 func setupRepo() *Repository {
@@ -43,4 +44,12 @@ func TestRepository_GetLatestArticle(t *testing.T) {
 		return
 	}
 	t.Log(article.UpdatedAt)
+}
+
+func TestRepository_DeleteArticles(t *testing.T) {
+	r := setupRepo()
+	err := r.DeleteArticles(time.Date(2021, 12, 26, 0, 0, 0, 0, time.Now().Location()))
+	if err != nil {
+		t.Error(err)
+	}
 }
