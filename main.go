@@ -20,12 +20,11 @@ func main() {
 
 	logger.Info("Start job")
 
-	gocron.Every(3).Hours().From(gocron.NextTick()).Do(func() {
-		deleteBefore := getDeleteBefore(repo)
+	err = gocron.Every(3).Hours().From(gocron.NextTick()).Do(func() {
 		updateIntervalHour := getUpdateIntervalHour(repo)
 		lastRun := getLastRun(repo)
 
-		err = repo.DeleteArticles(deleteBefore)
+		err = deleteOldArticles(repo)
 		if err != nil {
 			logger.Errorw("Error when delete articles", "error", err)
 		}
@@ -47,8 +46,38 @@ func main() {
 			logger.Infof("Finish collecting")
 		}
 	})
+	if err != nil {
+		logger.Errorw("Error when schedule job", "error", err)
+	}
 
 	<-gocron.Start()
+}
+
+func deleteOldArticles(repo *newscollector.Repository) error {
+	deleteBefore := getDeleteBefore(repo)
+	oldIDs, err := repo.GetOldArticleIDs(deleteBefore)
+	if err != nil {
+		return err
+	}
+	watchLaterIDs, err := repo.GetWatchLaterIDs()
+	if err != nil {
+		return err
+	}
+	watchLaterMap := make(map[int64]bool)
+	for _, w := range watchLaterIDs {
+		watchLaterMap[w] = true
+	}
+	deleteIDs := make([]int64, 0)
+	for _, o := range oldIDs {
+		if watchLaterMap[o] {
+			deleteIDs = append(deleteIDs, o)
+		}
+	}
+	err = repo.DeleteHistories(deleteIDs)
+	if err != nil {
+		return err
+	}
+	return repo.DeleteHistories(deleteIDs)
 }
 
 func getDeleteBefore(repo *newscollector.Repository) (deleteBefore time.Time) {

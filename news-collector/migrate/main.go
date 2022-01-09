@@ -32,7 +32,9 @@ func migrateSchemas(db *gorm.DB) error {
 
 	dropModels := []interface{}{
 		//&newscollector.Article{},
-		&newscollector.Category{},
+		//&newscollector.Category{},
+		&newscollector.ArticleHistory{},
+		&newscollector.ArticleWatchLater{},
 	}
 
 	for _, model := range dropModels {
@@ -43,6 +45,8 @@ func migrateSchemas(db *gorm.DB) error {
 		&newscollector.Article{},
 		&newscollector.Category{},
 		&newscollector.Setting{},
+		&newscollector.ArticleHistory{},
+		&newscollector.ArticleWatchLater{},
 	}
 
 	migrateModels := make([]interface{}, 0)

@@ -43,6 +43,16 @@ type Setting struct {
 	TextValue   string `json:"text_value"`
 }
 
+type ArticleHistory struct {
+	ArticleID int64     `json:"article_id" gorm:"primaryKey"`
+	CreatedAt time.Time `json:"created_at" gorm:"default:current_timestamp"`
+}
+
+type ArticleWatchLater struct {
+	ArticleID int64     `json:"article_id" gorm:"primaryKey"`
+	CreatedAt time.Time `json:"created_at" gorm:"default:current_timestamp"`
+}
+
 func (e *ExtraData) Scan(value interface{}) error {
 	bytes, ok := value.([]byte)
 	if !ok {
