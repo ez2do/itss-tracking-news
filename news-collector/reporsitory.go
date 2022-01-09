@@ -78,7 +78,49 @@ func (r *Repository) GetLatestArticle() (*Article, error) {
 	return article, nil
 }
 
-func (r *Repository) DeleteArticles(before time.Time) error {
+type articleIdentity struct {
+	ID int64 `json:"id"`
+}
+
+func (r *Repository) GetOldArticleIDs(before time.Time) ([]int64, error) {
+	articleIdentities := make([]*articleIdentity, 0)
+	err := r.db.Model(&Article{}).
+		Select("id").
+		Where("updated_at < ?", before).
+		Find(&articleIdentities).Error
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]int64, 0)
+	for _, a := range articleIdentities {
+		ids = append(ids, a.ID)
+	}
+
+	return ids, nil
+}
+
+func (r *Repository) GetWatchLaterIDs() ([]int64, error) {
+	articleIdentities := make([]*articleIdentity, 0)
+	err := r.db.Model(&ArticleWatchLater{}).
+		Select("article_id as id").
+		Find(&articleIdentities).Error
+	if err != nil {
+		return nil, err
+	}
+	ids := make([]int64, 0)
+	for _, a := range articleIdentities {
+		ids = append(ids, a.ID)
+	}
+
+	return ids, nil
+}
+
+func (r *Repository) DeleteArticles(ids []int64) error {
 	return r.db.Model(&Article{}).
-		Where("updated_at < ?", before).Delete(&Article{}).Error
+		Where("id in ?", ids).Delete(&Article{}).Error
+}
+
+func (r *Repository) DeleteHistories(ids []int64) error {
+	return r.db.Model(&ArticleHistory{}).
+		Where("article_id in ?", ids).Delete(&ArticleHistory{}).Error
 }
