@@ -1,7 +1,5 @@
 package database;
 
-import java.util.Date;
-
 public class ArticleFilter {
 	public String keyword;
 	public String from;
@@ -9,55 +7,8 @@ public class ArticleFilter {
 	public String category;
 	public String source;
 	public int page;
-	public int limit;
-	public String sortby;
+
 	
-	public ArticleFilter() {
-		super();
-		this.page = 1;
-		this.limit = 10;
-	}
-
-	public String getKeyword() {
-		return keyword;
-	}
-
-	public void setKeyword(String keyword) {
-		this.keyword = keyword;
-	}
-
-	public String getFrom() {
-		return from;
-	}
-
-	public void setFrom(String from) {
-		this.from = from;
-	}
-
-	public String getTo() {
-		return to;
-	}
-
-	public void setTo(String to) {
-		this.to = to;
-	}
-
-	public String getCategory() {
-		return category;
-	}
-
-	public void setCategory(String category) {
-		this.category = category;
-	}
-
-	public String getSource() {
-		return source;
-	}
-
-	public void setSource(String source) {
-		this.source = source;
-	}
-
 	public int getPage() {
 		return page;
 	}
@@ -66,24 +17,76 @@ public class ArticleFilter {
 		this.page = page;
 	}
 
-	public int getLimit() {
-		return limit;
+	public ArticleFilter() {
+		super();
+		this.page=1;
+		this.keyword = "";
+		this.from = "";
+		this.to = "";
+		this.category="";
+		this.source="";
 	}
 
-	public void setLimit(int limit) {
-		this.limit = limit;
+	public String getKeyword() {
+		return keyword;
 	}
 
-	public String getSortby() {
-		return sortby;
+	public void setKeyword(String keyword) {
+		if(!this.keyword.equals(keyword)) {
+			this.page=1;
+		}
+		this.keyword=keyword;
 	}
 
-	public void setSortby(String sortby) {
-		this.sortby = sortby;
+	public String getFrom() {
+		return from;
 	}
-	
-	
-	
-	
+
+	public void setFrom(String from) {
+		if(!this.from.equals(from)) {
+			this.page=1;
+		}
+		this.from = from;
+	}
+
+	public String getTo() {
+		return to;
+	}
+
+	public void setTo(String to) {
+		if(!this.to.equals(to)) {
+			this.page=1;
+		}
+		
+		this.to = to;
+	}
+
+	public String getCategory() {
+		return category;
+	}
+
+	public void setCategory(String category) {
+		if(!this.category.equals(category)) {
+			this.page=1;
+		}
+		
+		this.category = category;
+		
+	}
+
+	public String getSource() {
+		return source;
+	}
+
+	public void setSource(String source) {
+		if(!this.source.equals(source)) {
+			this.page=1;
+		}
+		
+		
+		this.source = source;
+	}
+
 	
 }
+
