@@ -23,4 +23,3 @@ go.work
 *.db
 .idea
 logs
-tracking-news
