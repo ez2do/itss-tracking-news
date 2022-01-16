@@ -1,2 +1,2 @@
 #!/bin/bash
-./tracking-news
+./news-collector/tracking-news

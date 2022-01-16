@@ -23,7 +23,6 @@ go.work
 *.db
 .idea
 logs
-tracking-news
 
 # Compiled class file
 *.class
