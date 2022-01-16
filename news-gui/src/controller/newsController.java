@@ -1,14 +1,22 @@
 package controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
 import models.newsTable;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
+import java.net.URI;
+import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -18,13 +26,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -38,7 +50,7 @@ import database.CategoryStorage;
 import database.SettingStorage;
 
 
-public class newsController implements Initializable {
+public class newsController extends Application implements Initializable  {
 	
 	public newsController() {
 		super();
@@ -72,7 +84,7 @@ public class newsController implements Initializable {
 	    public Button historyButton;
 
 	    @FXML
-	    public TableColumn<newsTable, String> image;  //Image type
+	    public TableColumn<newsTable, ImageView> image;  //Image type
 
 	    @FXML
 	    public TableView<Article> newsTable;
@@ -231,22 +243,82 @@ public class newsController implements Initializable {
 //    protected static Article a;
     ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(myFilter));
     
+//    Hyperlink link = new Hyperlink();
+//    link.setText("http://example.com");
+//    link.setOnAction(new EventHandler<ActionEvent>() {
+//        @Override
+//        public void handle(ActionEvent e) {
+//            System.out.println("This link is clicked");
+//        }
+//    };
+    
     @Override
 	public void initialize(URL url, ResourceBundle rb){
+    	for (int i = 0; i < articles.size(); i++) {
+    		Article article = articles.get(i);
+    		Image image = new Image(article.image);
+    		ImageView imageView = new ImageView(image);
+    		// set width height
+    		
+    		articles.get(i).image_view = imageView;
+    		imageView.setFitHeight(100);
+    		imageView.setFitWidth(180);
+    		
+    		Hyperlink hyperLink = new Hyperlink(article.link);
+//    		List<Hyperlink> linkList = new ArrayList<>();
+//    		linkList.add(hyperLink);
+//            for(final Hyperlink hyperlink : linkList) {
+//                hyperlink.setOnAction(new EventHandler<ActionEvent>() {
+//
+//                    @Override
+//                    public void handle(ActionEvent t) {
+//                        getHostServices().showDocument(hyperlink.getText());
+//                    }
+//                });
+//            }
+    		
+    		hyperLink.setText(article.title);
+    		hyperLink.setText("link");
+    		URI linkURI = null;
+			try {
+				linkURI = new URI(article.link);
+			} catch (URISyntaxException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+    		try {
+				hyperLink.setOnAction(OpenLink(linkURI));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+  
+    	}
 //    	System.out.print("hello");
     	category.setCellValueFactory(new PropertyValueFactory<newsTable,String>("category"));
-    	description.setCellValueFactory(new PropertyValueFactory<newsTable,String>("source"));
-    	image.setCellValueFactory(new PropertyValueFactory<newsTable,String>("link"));
-    	source.setCellValueFactory(new PropertyValueFactory<newsTable,String>("link"));
-    	articleDate.setCellValueFactory(new PropertyValueFactory<newsTable,String>("link"));
-    	title.setCellValueFactory(new PropertyValueFactory<newsTable,String>("link"));
+    	description.setCellValueFactory(new PropertyValueFactory<newsTable,String>("description"));
+//    	image.setCellValueFactory(new PropertyValueFactory<newsTable,ImageView>("image"));
+    	image.setCellValueFactory(new PropertyValueFactory<newsTable,ImageView>("image_view"));
+    	source.setCellValueFactory(new PropertyValueFactory<newsTable,String>("source"));
+    	articleDate.setCellValueFactory(new PropertyValueFactory<newsTable,String>("published_parsed"));
+    	title.setCellValueFactory(new PropertyValueFactory<newsTable,String>("title"));
 //    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<newsTable,CheckBox>("cateCheckBox"));
     	newsTable.setItems(null);
 //    	System.out.print(categories.size());
     	newsTable.setItems(articles);
     }
 
+    private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
+//    	// TODO Auto-generated method stub
+//    	Desktop.getDesktop().browse(url);
+    	return null;
+	
+}
 
-
+	@Override
+	public void start(Stage arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }
 

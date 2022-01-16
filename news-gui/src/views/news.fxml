@@ -47,12 +47,12 @@
             <Button fx:id="backButton" layoutX="1003.0" layoutY="525.0" mnemonicParsing="false" onAction="#toBase" prefHeight="58.0" prefWidth="150.0" text="Trở về" />
             <TableView fx:id="newsTable" layoutX="14.0" layoutY="159.0" prefHeight="554.0" prefWidth="970.0">
               <columns>
-                <TableColumn fx:id="image" prefWidth="155.1999969482422" text="Hình ảnh" />
-                <TableColumn fx:id="title" prefWidth="154.4000244140625" text="Tiêu đề" />
-                  <TableColumn fx:id="description" prefWidth="266.4000244140625" text="Nội dung" />
-                  <TableColumn fx:id="source" prefWidth="94.39996337890625" text="Nguồn" />
-                  <TableColumn fx:id="category" prefWidth="124.0" text="Chủ đề" />
-                  <TableColumn fx:id="articleDate" prefWidth="128.0" text="Ngày cập nhật" />
+                <TableColumn fx:id="image" editable="false" prefWidth="155.1999969482422" text="Hình ảnh" />
+                <TableColumn fx:id="title" editable="false" prefWidth="154.4000244140625" text="Tiêu đề" />
+                  <TableColumn fx:id="description" editable="false" prefWidth="266.4000244140625" text="Nội dung" />
+                  <TableColumn fx:id="source" editable="false" prefWidth="94.39996337890625" text="Nguồn" />
+                  <TableColumn fx:id="category" editable="false" prefWidth="124.0" text="Chủ đề" />
+                  <TableColumn fx:id="articleDate" editable="false" prefWidth="128.0" text="Ngày cập nhật" />
                   <TableColumn fx:id="checkarticle" prefWidth="44.80001220703127" text="Check" />
               </columns>
             </TableView>
@@ -74,7 +74,7 @@
             </RadioButton>
             <RadioButton fx:id="save2" layoutX="1013.0" layoutY="395.0" mnemonicParsing="false" text="1 tháng " toggleGroup="$save" />
             <DatePicker fx:id="searchDate1" layoutX="885.0" layoutY="91.0" promptText="Từ ngày" />
-            <Pagination fx:id="pagination" layoutX="261.0" layoutY="567.0" maxPageIndicatorCount="5" prefHeight="200.0" prefWidth="457.0" />
+            <Pagination fx:id="pagination" layoutX="15.0" layoutY="161.0" maxPageIndicatorCount="5" prefHeight="606.0" prefWidth="969.0" />
          </children>
       </AnchorPane>
    </center>

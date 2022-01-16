@@ -1,5 +1,8 @@
 package models;
 
+import javafx.scene.control.Hyperlink;
+import javafx.scene.image.ImageView;
+
 public class Article {
 	public int id;
 	public String title;
@@ -9,7 +12,38 @@ public class Article {
 	public String image;
 	public String category;
 	public String source;
-	
+	public ImageView image_view;
+	public Hyperlink hyperLink;
+
+	public Article(int id, String title, String description, String link, String published_parsed, String image,
+			String category, String source, ImageView image_view) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.link = link;
+		this.published_parsed = published_parsed;
+		this.image = image;
+		this.category = category;
+		this.source = source;
+		this.image_view = image_view;
+	}
+
+	public Article(int id, String title, String description, String link, String published_parsed, String image,
+			String category, String source, ImageView image_view, Hyperlink hyperLink) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.link = link;
+		this.published_parsed = published_parsed;
+		this.image = image;
+		this.category = category;
+		this.source = source;
+		this.image_view = image_view;
+		this.hyperLink = hyperLink;
+	}
+
 	public Article(int id, String title, String description, String link, String published_parsed, String image,
 			String category, String source) {
 		super();
@@ -87,6 +121,12 @@ public class Article {
 		this.source = source;
 	}
 	
-	
+	public ImageView getImage_view() {
+		return image_view;
+	}
+
+	public void setImage_view(ImageView image_view) {
+		this.image_view = image_view;
+	}
 	
 }
