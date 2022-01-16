@@ -8,19 +8,14 @@ import java.util.ArrayList;
 import models.Category;
 
 public class CategoryStorage {
-	private Connection db;
+	public static Connection db;
+	
+	static {
+		db = DbConnection.connect();
+	}
 
-	public CategoryStorage(Connection db) {
-		super();
-		this.db = db;
-	}
-	public Connection getDb() {
-		return db;
-	}
-	public void setDb(Connection db) {
-		this.db = db;
-	}
-	public ArrayList<Category> getCategory(int page){
+
+	public static ArrayList<Category> getCategory(int page){
 		ArrayList<Category> categoryList = new ArrayList<Category>();
 		PreparedStatement ps = null; 
 	    ResultSet rs = null;
@@ -42,7 +37,7 @@ public class CategoryStorage {
 	    return categoryList;
 	}
 	
-	public String[] getCategoryNames() {
+	public static String[] getCategoryNames() {
 		String sql = "Select distinct name from categories";
 		ArrayList<String> nameslist = new ArrayList<String>();
 		PreparedStatement ps = null;
@@ -61,7 +56,7 @@ public class CategoryStorage {
 	    return categoryNames;
 	}
 	
-	public String[] getCategorySources() {
+	public static String[] getCategorySources() {
 		String sql = "Select distinct source from categories";
 		ArrayList<String> sourceslist = new ArrayList<String>();
 		PreparedStatement ps = null;
@@ -81,7 +76,7 @@ public class CategoryStorage {
 	}
 	
 	
-	public int countCategory() {
+	public static int countCategory() {
 		String statement = "SELECT COUNT(*) FROM categories";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -96,13 +91,13 @@ public class CategoryStorage {
 		return count;
 	}
 	
-	public int pageCount() {
+	public static int pageCount() {
 		int n = countCategory();
 		if(n%10==0 && n!=0) return n/10;
 		return n/10+1;
 	}
 	
-	public void addtoCategory(String name, String source, String link) {
+	public static void addtoCategory(String name, String source, String link) {
 	    PreparedStatement ps = null;
 	    try {
 	    	String sql = "INSERT OR IGNORE INTO categories(name, source, link) VALUES(?,?,?)";
@@ -116,7 +111,7 @@ public class CategoryStorage {
 	    }
 	}
 	
-	public void deleteCategorybyId(int id) {
+	public static void deleteCategorybyId(int id) {
 		PreparedStatement ps = null;
 	    try {
 	    	String sql = "DELETE FROM categories where id = ?";

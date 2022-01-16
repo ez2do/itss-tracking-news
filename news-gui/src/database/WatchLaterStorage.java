@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import models.Article;
 
 public class WatchLaterStorage {
-	private Connection db;
-	public WatchLaterStorage(Connection db) {
-		super();
-		this.db = db;
+	private static Connection db;
+	
+	static {
+		db = DbConnection.connect();
 	}
-	public void addtoWatchLater(int id) {
+	
+	public static void addtoWatchLater(int id) {
 		PreparedStatement ps = null; 
 		try {
 			String statement = "INSERT OR IGNORE INTO article_watch_laters(article_id) VALUES (?)";
@@ -26,7 +27,7 @@ public class WatchLaterStorage {
 		}
 	}
 	
-	public ArrayList<Article> getWatchLater(int page) {
+	public static ArrayList<Article> getWatchLater(int page) {
 		ArrayList<Article> watchlaterList= new ArrayList<Article>();
 		int offset = (page-1)*10;
 		String statement = "SELECT articles.* from articles,article_watch_laters WHERE id = article_id order by created_at DESC LIMIT 10 OFFSET "+offset;
@@ -55,7 +56,7 @@ public class WatchLaterStorage {
 		return watchlaterList;
 	}
 	
-	public int countWatchLater() {
+	public static int countWatchLater() {
 		String statement = "SELECT COUNT(*) FROM article_watch_laters";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -69,7 +70,7 @@ public class WatchLaterStorage {
 		}
 		return count;
 	}
-	public int pageCount() {
+	public static int pageCount() {
 		int n = countWatchLater();
 		if(n%10==0 && n!=0) return n/10;
 		return n/10+1;
@@ -85,7 +86,7 @@ public class WatchLaterStorage {
 //			System.out.println(e.toString());
 //		}
 //	}
-	public void deleteWatchLaterbyIds(int[] ids) {
+	public static void deleteWatchLaterbyIds(int[] ids) {
 		PreparedStatement ps = null;
 		String[] s = new String[ids.length];
 		for(int i=0;i<ids.length;i++) {

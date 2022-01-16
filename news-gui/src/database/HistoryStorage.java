@@ -9,12 +9,13 @@ import java.util.ArrayList;
 import models.Article;
 
 public class HistoryStorage {
-	private Connection db;
-	public HistoryStorage(Connection db) {
-		super();
-		this.db = db;
+	private static Connection db;
+	
+	static {
+		db = DbConnection.connect();
 	}
-	public void addtoHistory(int id) {
+
+	public static void addtoHistory(int id) {
 		PreparedStatement ps = null; 
 		try {
 			String statement = "INSERT INTO article_histories(article_id) VALUES (?) ON CONFLICT(article_id) DO UPDATE SET created_at=CURRENT_TIMESTAMP";
@@ -56,7 +57,7 @@ public class HistoryStorage {
 		return historyList;
 	}
 	
-	public int countHistory() {
+	public static int countHistory() {
 		String statement = "SELECT COUNT(*) FROM article_histories";
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -70,13 +71,13 @@ public class HistoryStorage {
 		}
 		return count;
 	}
-	public int pageCount() {
+	public static int pageCount() {
 		int n = countHistory();
 		if(n%10==0 && n!=0) return n/10;
 		return n/10+1;
 	}
 	
-	public void deleteHistory() {
+	public static void deleteHistory() {
 		PreparedStatement ps = null; 
 		try {
 			String statement = "DELETE FROM article_histories";
@@ -86,7 +87,7 @@ public class HistoryStorage {
 			System.out.println(e.toString());
 		}
 	}
-	public void deleteHistorybyIds(int[] ids) {
+	public static void deleteHistorybyIds(int[] ids) {
 		PreparedStatement ps = null;
 		String[] s = new String[ids.length];
 		for(int i=0;i<ids.length;i++) {

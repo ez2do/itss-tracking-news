@@ -7,25 +7,16 @@ import java.sql.SQLException;
 
 
 public class SettingStorage {
-	private Connection db;
+	private static Connection db;
+	
+	static {
+		db = DbConnection.connect();
+	}
 
 	public static final String updateIntervalHourKey = "update_interval_hour";
 	public static final String deleteIntervalDayKey = "delete_interval_day";
-
-	public Connection getDb() {
-		return db;
-	}
-
-	public void setDb(Connection db) {
-		this.db = db;
-	}
-
-	public SettingStorage(Connection db) {
-		super();
-		this.db = db;
-	}
 	
-	public void updateHour(int h) {
+	public static void updateHour(int h) {
 		PreparedStatement ps = null;
 		try {
 			  String sql = "UPDATE settings SET number_value = ? WHERE name = 'update_interval_hour'" ;
@@ -37,7 +28,7 @@ public class SettingStorage {
 		    }
 	}
 	
-	public void updateDay(int d) {
+	public static void updateDay(int d) {
 		PreparedStatement ps = null;
 		try {
 			  String sql = "UPDATE settings SET number_value = ? WHERE name = 'delete_interval_day'" ;
@@ -49,7 +40,7 @@ public class SettingStorage {
 		}
 	}
 	
-	public int getSettingValueByKey(String key) {
+	public static int getSettingValueByKey(String key) {
 		PreparedStatement ps = null;
 		ResultSet rs = null;
 		int value=0;;

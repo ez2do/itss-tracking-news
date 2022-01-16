@@ -8,31 +8,15 @@ import java.util.ArrayList;
 import models.Article;
 
 public class ArticleStorage {
-	private Connection db;
-	public ArrayList<Article> articleList;
-	public ArrayList<Article> subarticleList;
-	public ArrayList<Article> historyList;
-	public ArrayList<Article> watchlaterList;
-	
-	
-	public ArticleStorage(Connection db) {
-		super();
-		this.db = db;
+	private static Connection db;
+	static {
+		db = DbConnection.connect();
 	}
 
-	public Connection getDb() {
-		return db;
-	}
-
-	public void setDb(Connection db) {
-		this.db = db;
-	}
-
-
-	public ArrayList<Article> getArticle(ArticleFilter filter ) {
+	public static ArrayList<Article> getArticle(ArticleFilter filter ) {
 		ArrayList<Article> articleList= new ArrayList<Article>();
 		String statement = "SELECT * FROM articles ";
-		String condition = this.buildQuery(filter);
+		String condition = buildQuery(filter);
 		int offset = (filter.page-1)*10;
 		statement = statement + condition + " order by published_parsed desc LIMIT 10 OFFSET "+offset;
 		System.out.println(statement);
@@ -59,11 +43,11 @@ public class ArticleStorage {
 		      System.out.println(e.toString());
 		}
 		return articleList;
-		
+	
 	}
 	
 	
-	private String buildQuery(ArticleFilter filter) {
+	public static String buildQuery(ArticleFilter filter) {
 		ArrayList<String> conditions = new ArrayList<String>();
 		
 		if(filter.keyword.length()!=0) {
@@ -94,9 +78,9 @@ public class ArticleStorage {
 		return "";
 	}
 	
-	public int countArticle(ArticleFilter filter) {
+	public static int countArticle(ArticleFilter filter) {
 		String statement = "SELECT COUNT(*) FROM articles";
-		String condition = this.buildQuery(filter);
+		String condition = buildQuery(filter);
 		
 		statement = statement + condition ;
 		PreparedStatement ps = null;
