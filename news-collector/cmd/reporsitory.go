@@ -44,7 +44,7 @@ func (r *Repository) UpsertArticles(articles []*Article) error {
 				{Name: "category"},
 				{Name: "source"},
 			},
-			DoUpdates: clause.AssignmentColumns([]string{"updated_at"}),
+			DoUpdates: clause.AssignmentColumns([]string{"updated_at", "description"}),
 		}).
 		Create(&articles).Error
 }
@@ -62,6 +62,15 @@ func (r *Repository) GetSettingByName(name string) (*Setting, error) {
 	}
 
 	return setting, nil
+}
+
+func (r *Repository) InsertSettings(settings []*Setting) error {
+	return r.db.Model(&Setting{}).Clauses(clause.OnConflict{
+		Columns: []clause.Column{
+			{Name: "name"},
+		},
+		DoNothing: true,
+	}).Create(settings).Error
 }
 
 func (r *Repository) GetLatestArticle() (*Article, error) {
