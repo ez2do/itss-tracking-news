@@ -1,3 +1,5 @@
-/models/
+/application/
+/controller/
 /database/
+/models/
 /views/

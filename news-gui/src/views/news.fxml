@@ -1,74 +1,80 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Pagination?>
+<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="../controller/newsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.newsController">
    <center>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane accessibleRole="RADIO_BUTTON" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
             <Label layoutX="479.0" layoutY="24.0" text="TIN TỨC MỚI" textFill="#f70202">
                <font>
                   <Font name="System Bold" size="33.0" />
                </font>
             </Label>
-            <Text layoutX="199.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm kiếm:" wrappingWidth="87.7366943359375">
+            <Text layoutX="14.0" layoutY="110.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tìm kiếm:" wrappingWidth="87.7366943359375">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Text>
-            <TextField layoutX="304.0" layoutY="95.0" prefHeight="46.0" prefWidth="590.0" />
-            <Button layoutX="1074.0" layoutY="95.0" mnemonicParsing="false" onMouseClicked="#searchNews" prefHeight="58.0" prefWidth="72.0" text="Tìm">
+            <TextField fx:id="searchField" layoutX="119.0" layoutY="94.0" prefHeight="59.0" prefWidth="590.0" />
+            <Button fx:id="searchButton" layoutX="1074.0" layoutY="95.0" mnemonicParsing="false" onAction="#searchNews" prefHeight="58.0" prefWidth="72.0" text="Tìm">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <ComboBox layoutX="907.0" layoutY="92.0" prefWidth="150.0" promptText="Chủ đề" />
-            <Text layoutX="22.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CÀI ĐẶT" wrappingWidth="116.77813720703125">
+            <ComboBox fx:id="categoryBox" layoutX="722.0" layoutY="91.0" onAction="#showCategory" prefHeight="26.0" prefWidth="149.0" promptText="Chủ đề" />
+            <Text layoutX="995.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CÀI ĐẶT" wrappingWidth="116.77813720703125">
                <font>
                   <Font name="System Bold" size="27.0" />
                </font>
             </Text>
-            <Text layoutX="31.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cập nhật tin sau:" />
-            <CheckBox layoutX="43.0" layoutY="235.0" mnemonicParsing="false" onMouseClicked="#update1" text="3 giờ" />
-            <CheckBox layoutX="43.0" layoutY="267.0" mnemonicParsing="false" onMouseClicked="#update2" text="6 giờ" />
-            <CheckBox layoutX="43.0" layoutY="299.0" mnemonicParsing="false" onMouseClicked="#update3" text="12 giờ" />
-            <Text layoutX="31.0" layoutY="347.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lưu trữ tin trong:" />
-            <CheckBox layoutX="43.0" layoutY="366.0" mnemonicParsing="false" onMouseClicked="#save1" text="1 tuần" />
-            <CheckBox layoutX="44.0" layoutY="399.0" mnemonicParsing="false" onMouseClicked="#save2" text="1 tháng" />
-            <Button layoutX="17.0" layoutY="564.0" mnemonicParsing="false" onMouseClicked="#toHistory" prefHeight="58.0" prefWidth="150.0" text="Hiển thị lịch sử xem" />
-            <Button layoutX="17.0" layoutY="649.0" mnemonicParsing="false" onMouseClicked="#toBase" prefHeight="58.0" prefWidth="150.0" text="Trở về" />
-            <TableView layoutX="199.0" layoutY="166.0" prefHeight="594.0" prefWidth="969.0">
+            <Text layoutX="999.0" layoutY="214.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Cập nhật tin sau:" />
+            <Text layoutX="998.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lưu trữ tin trong:" />
+            <Button fx:id="historyButton" layoutX="1003.0" layoutY="454.0" mnemonicParsing="false" onAction="#toHistory" prefHeight="58.0" prefWidth="150.0" text="Hiển thị lịch sử xem" />
+            <Button fx:id="backButton" layoutX="1003.0" layoutY="525.0" mnemonicParsing="false" onAction="#toBase" prefHeight="58.0" prefWidth="150.0" text="Trở về" />
+            <TableView fx:id="newsTable" layoutX="14.0" layoutY="159.0" prefHeight="554.0" prefWidth="970.0">
               <columns>
-                <TableColumn prefWidth="155.1999969482422" text="Hình ảnh" />
-                <TableColumn prefWidth="154.4000244140625" text="Tiêu đề" />
-                  <TableColumn prefWidth="266.4000244140625" text="Nội dung" />
-                  <TableColumn prefWidth="94.39996337890625" text="Nguồn" />
-                  <TableColumn prefWidth="124.0" text="Chủ đề" />
-                  <TableColumn prefWidth="186.4000244140625" text="Ngày cập nhật" />
+                <TableColumn fx:id="image" prefWidth="155.1999969482422" text="Hình ảnh" />
+                <TableColumn fx:id="title" prefWidth="154.4000244140625" text="Tiêu đề" />
+                  <TableColumn fx:id="description" prefWidth="266.4000244140625" text="Nội dung" />
+                  <TableColumn fx:id="source" prefWidth="94.39996337890625" text="Nguồn" />
+                  <TableColumn fx:id="category" prefWidth="124.0" text="Chủ đề" />
+                  <TableColumn fx:id="articleDate" prefWidth="128.0" text="Ngày cập nhật" />
+                  <TableColumn fx:id="checkarticle" prefWidth="44.80001220703127" text="Check" />
               </columns>
             </TableView>
-            <Text layoutX="22.0" layoutY="475.0" strokeType="OUTSIDE" strokeWidth="0.0" text="XEM TIN" wrappingWidth="116.77813720703125">
-               <font>
-                  <Font name="System Bold" size="27.0" />
-               </font>
-            </Text>
-            <Text layoutX="26.0" layoutY="498.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Chuyển đến trang:" />
-            <Label layoutX="81.0" layoutY="514.0" prefHeight="24.0" prefWidth="35.0" text="Label" />
-            <Button layoutX="129.0" layoutY="513.0" mnemonicParsing="false" text="Sau" />
-            <Button layoutX="24.0" layoutY="513.0" mnemonicParsing="false" text="Trước" />
-            <ComboBox layoutX="907.0" layoutY="128.0" onAction="#showSource" prefWidth="150.0" promptText="Nguồn" />
-            <DatePicker layoutX="907.0" layoutY="49.0" />
+            <Label layoutX="1054.0" layoutY="501.0" prefHeight="24.0" prefWidth="35.0" />
+            <ComboBox fx:id="sourceBox" layoutX="722.0" layoutY="127.0" prefHeight="25.0" prefWidth="150.0" promptText="Nguồn" />
+            <DatePicker fx:id="searchDate2" layoutX="885.0" layoutY="127.0" promptText="Đến ngày" />
+            <Label layoutX="885.0" layoutY="90.0" prefHeight="27.0" prefWidth="175.0" />
+            <RadioButton fx:id="update1" layoutX="1013.0" layoutY="230.0" mnemonicParsing="false" text="3 giờ">
+               <toggleGroup>
+                  <ToggleGroup fx:id="update" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="update2" layoutX="1013.0" layoutY="261.0" mnemonicParsing="false" text="6 giờ" toggleGroup="$update" />
+            <RadioButton fx:id="update3" layoutX="1013.0" layoutY="295.0" mnemonicParsing="false" text="9 giờ" toggleGroup="$update" />
+            <RadioButton fx:id="save1" layoutX="1013.0" layoutY="358.0" mnemonicParsing="false" text="1 tuần">
+               <toggleGroup>
+                  <ToggleGroup fx:id="save" />
+               </toggleGroup>
+            </RadioButton>
+            <RadioButton fx:id="save2" layoutX="1013.0" layoutY="395.0" mnemonicParsing="false" text="1 tháng " toggleGroup="$save" />
+            <DatePicker fx:id="searchDate1" layoutX="885.0" layoutY="91.0" promptText="Từ ngày" />
+            <Pagination fx:id="pagination" layoutX="261.0" layoutY="567.0" maxPageIndicatorCount="5" prefHeight="200.0" prefWidth="457.0" />
          </children>
       </AnchorPane>
    </center>
