@@ -14,7 +14,7 @@ func init() {
 	conf := zap.NewDevelopmentEncoderConfig()
 	encoder := zapcore.NewConsoleEncoder(conf)
 
-	f, err := os.OpenFile("logs", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0644)
+	f, err := os.OpenFile("logs", os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0755)
 	if err != nil {
 		panic(err)
 	}

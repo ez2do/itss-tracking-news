@@ -3,6 +3,7 @@ package cmd
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"html"
 	"log"
 	"strings"
 	"testing"
@@ -89,7 +90,8 @@ func TestRepository_ExtractDescription(t *testing.T) {
 		return
 	}
 	for _, article := range articles {
-		article.Description = ExtractContent(article.Description)
+		article.Title = html.UnescapeString(article.Title)
+		article.Description = html.UnescapeString(ExtractContent(article.Description))
 		article.Link = strings.TrimSpace(article.Link)
 	}
 	err = r.UpsertArticles(articles)

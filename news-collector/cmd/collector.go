@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"github.com/mmcdole/gofeed"
+	"html"
 	"regexp"
 	"strings"
 	"time"
@@ -219,8 +220,8 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 	}
 
 	return &Article{
-		Title:           strings.TrimSpace(item.Title),
-		Description:     ExtractContent(item.Description),
+		Title:           html.UnescapeString(strings.TrimSpace(item.Title)),
+		Description:     html.UnescapeString(ExtractContent(item.Description)),
 		Link:            strings.TrimSpace(link),
 		Published:       item.Published,
 		PublishedParsed: parsedTime,
