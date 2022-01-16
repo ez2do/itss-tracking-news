@@ -16,8 +16,27 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	err = cmd.MigrateSchemas(db)
+	if err != nil {
+		log.Fatal(err)
+	}
 	repo := cmd.NewRepository(db)
 	collector := cmd.NewCollector(repo)
+
+	categories, err := repo.GetAllCategories()
+	if err != nil {
+		log.Fatal(err)
+	}
+	if len(categories) == 0 {
+		err = cmd.MigrateCategories(repo)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+	err = cmd.MigrateSettings(repo)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	logger.Info("Start job")
 

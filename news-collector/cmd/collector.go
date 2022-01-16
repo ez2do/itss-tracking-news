@@ -220,7 +220,7 @@ func (c *Collector) feedItemToArticle(item *gofeed.Item, category, source string
 
 	return &Article{
 		Title:           strings.TrimSpace(item.Title),
-		Description:     c.extractContent(item.Description),
+		Description:     ExtractContent(item.Description),
 		Link:            strings.TrimSpace(link),
 		Published:       item.Published,
 		PublishedParsed: parsedTime,
@@ -243,7 +243,7 @@ func (c *Collector) runWithRetry(f func() error, retryTimes int) (err error) {
 	return
 }
 
-func (c *Collector) extractContent(raw string) string {
+func ExtractContent(raw string) string {
 	r, _ := regexp.Compile("<.*>")
 	return r.ReplaceAllString(raw, "")
 }
