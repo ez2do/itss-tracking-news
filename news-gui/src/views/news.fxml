@@ -59,19 +59,19 @@
             <ComboBox fx:id="sourceBox" layoutX="722.0" layoutY="127.0" prefHeight="25.0" prefWidth="150.0" promptText="Nguồn" />
             <DatePicker fx:id="searchDate2" layoutX="885.0" layoutY="127.0" promptText="Đến ngày" />
             <Label layoutX="885.0" layoutY="90.0" prefHeight="27.0" prefWidth="175.0" />
-            <RadioButton fx:id="update1" layoutX="1013.0" layoutY="230.0" mnemonicParsing="false" text="3 giờ">
+            <RadioButton fx:id="update1" layoutX="1013.0" layoutY="230.0" mnemonicParsing="false" onAction="#updateSettingHour" text="3 giờ">
                <toggleGroup>
                   <ToggleGroup fx:id="update" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="update2" layoutX="1013.0" layoutY="261.0" mnemonicParsing="false" text="6 giờ" toggleGroup="$update" />
-            <RadioButton fx:id="update3" layoutX="1013.0" layoutY="295.0" mnemonicParsing="false" text="9 giờ" toggleGroup="$update" />
-            <RadioButton fx:id="save1" layoutX="1013.0" layoutY="358.0" mnemonicParsing="false" text="1 tuần">
+            <RadioButton fx:id="update2" layoutX="1013.0" layoutY="261.0" mnemonicParsing="false" onAction="#updateSettingHour" text="6 giờ" toggleGroup="$update" />
+            <RadioButton fx:id="update3" layoutX="1013.0" layoutY="295.0" mnemonicParsing="false" onAction="#updateSettingHour" text="9 giờ" toggleGroup="$update" />
+            <RadioButton fx:id="save1" layoutX="1013.0" layoutY="358.0" mnemonicParsing="false" onAction="#saveSettingDay" text="1 tuần">
                <toggleGroup>
                   <ToggleGroup fx:id="save" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="save2" layoutX="1013.0" layoutY="395.0" mnemonicParsing="false" text="1 tháng " toggleGroup="$save" />
+            <RadioButton fx:id="save2" layoutX="1013.0" layoutY="395.0" mnemonicParsing="false" onAction="#saveSettingDay" text="1 tháng " toggleGroup="$save" />
             <DatePicker fx:id="searchDate1" layoutX="885.0" layoutY="91.0" promptText="Từ ngày" />
             <Button fx:id="back" layoutX="330.0" layoutY="728.0" mnemonicParsing="false" onAction="#goBack" text="Trước" />
             <Button fx:id="foward" layoutX="565.0" layoutY="728.0" mnemonicParsing="false" onAction="#goFront" text="Sau" />
