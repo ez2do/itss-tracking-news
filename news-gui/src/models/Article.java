@@ -41,7 +41,8 @@ public class Article {
 		this.category = category;
 		this.source = source;
 		this.image_view = image_view;
-		this.hyperLink = hyperLink;
+		this.hyperLink = new Hyperlink(title);
+		this.hyperLink.setText(link);
 	}
 
 	public Article(int id, String title, String description, String link, String published_parsed, String image,
@@ -55,6 +56,14 @@ public class Article {
 		this.image = image;
 		this.category = category;
 		this.source = source;
+	}
+	
+	public Hyperlink getHyperLink() {
+		return hyperLink;
+	}
+
+	public void setHyperLink(Hyperlink hyperLink) {
+		this.hyperLink = hyperLink;
 	}
 
 	public int getId() {

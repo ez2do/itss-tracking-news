@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.scene.control.Hyperlink;
 import models.Article;
 
 public class ArticleStorage {

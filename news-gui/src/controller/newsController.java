@@ -114,7 +114,7 @@ public class newsController extends Application implements Initializable  {
 	    public ComboBox<String> sourceBox;
 
 	    @FXML
-	    public TableColumn<newsTable, String> title;
+	    public TableColumn<newsTable, Hyperlink> hyperLink;
 
 	    @FXML
 	    public ToggleGroup update;
@@ -194,7 +194,7 @@ public class newsController extends Application implements Initializable  {
     	ArticleStorage.buildQuery(myFilter);
     }
 
-    ObservableList<String> cateBoxContent = FXCollections.observableArrayList("VÄƒn hÃ³a & GiÃ¡o dá»¥c","Sá»©c khá»�e & Ä�á»�i sá»‘ng","Khoa há»�c & CÃ´ng nghá»‡","Tháº¿ giá»›i","Thá»�i sá»±","TÃ i chÃ­nh & Kinh doanh","Giáº£i trÃ­","Thá»ƒ thao");
+    ObservableList<String> cateBoxContent = FXCollections.observableArrayList("Văn hóa & Giáo dục","Sức khỏe & Đời sống","Khoa học & Công nghệ","Thời sự","Thế giới","Tài chính & Kinh doanh","Giải trí","Thể thao");
     @FXML
     void showCategory(ActionEvent event) {
     	categoryBox.setItems(cateBoxContent);
@@ -239,8 +239,6 @@ public class newsController extends Application implements Initializable  {
     	}
     }
     
-    
-//    protected static Article a;
     ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(myFilter));
     
 //    Hyperlink link = new Hyperlink();
@@ -251,6 +249,8 @@ public class newsController extends Application implements Initializable  {
 //            System.out.println("This link is clicked");
 //        }
 //    };
+    
+    
     
     @Override
 	public void initialize(URL url, ResourceBundle rb){
@@ -264,7 +264,7 @@ public class newsController extends Application implements Initializable  {
     		imageView.setFitHeight(100);
     		imageView.setFitWidth(180);
     		
-    		Hyperlink hyperLink = new Hyperlink(article.link);
+//    		Hyperlink hyperLink = new Hyperlink(article.link);
 //    		List<Hyperlink> linkList = new ArrayList<>();
 //    		linkList.add(hyperLink);
 //            for(final Hyperlink hyperlink : linkList) {
@@ -276,41 +276,40 @@ public class newsController extends Application implements Initializable  {
 //                    }
 //                });
 //            }
+    		Hyperlink myHyperLink = new Hyperlink();
     		
-    		hyperLink.setText(article.title);
-    		hyperLink.setText("link");
-    		URI linkURI = null;
-			try {
-				linkURI = new URI(article.link);
-			} catch (URISyntaxException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
-    		try {
-				hyperLink.setOnAction(OpenLink(linkURI));
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-  
+    		myHyperLink.setText(article.title);
+
+			myHyperLink.setOnAction(e -> {
+	    		URI linkURI = null;
+				try {
+					linkURI = new URI(article.link);
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					OpenLink(linkURI);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			});
+			articles.get(i).hyperLink = myHyperLink;
     	}
-//    	System.out.print("hello");
     	category.setCellValueFactory(new PropertyValueFactory<newsTable,String>("category"));
     	description.setCellValueFactory(new PropertyValueFactory<newsTable,String>("description"));
-//    	image.setCellValueFactory(new PropertyValueFactory<newsTable,ImageView>("image"));
     	image.setCellValueFactory(new PropertyValueFactory<newsTable,ImageView>("image_view"));
     	source.setCellValueFactory(new PropertyValueFactory<newsTable,String>("source"));
     	articleDate.setCellValueFactory(new PropertyValueFactory<newsTable,String>("published_parsed"));
-    	title.setCellValueFactory(new PropertyValueFactory<newsTable,String>("title"));
+    	hyperLink.setCellValueFactory(new PropertyValueFactory<newsTable,Hyperlink>("hyperLink"));
 //    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<newsTable,CheckBox>("cateCheckBox"));
+    	
+//    	category.setCellValueFactory(cellData -> cellData.getValue().category());
     	newsTable.setItems(null);
-//    	System.out.print(categories.size());
     	newsTable.setItems(articles);
     }
 
     private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
-//    	// TODO Auto-generated method stub
-//    	Desktop.getDesktop().browse(url);
+    	Desktop.getDesktop().browse(url);
     	return null;
 	
 }
