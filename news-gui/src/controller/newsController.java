@@ -378,7 +378,16 @@ public class newsController extends Application implements Initializable  {
     }
 
     private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
-    	Desktop.getDesktop().browse(url);
+    	if( Desktop.isDesktopSupported() )
+    	{
+    	    new Thread(() -> {
+    	           try {
+    	               Desktop.getDesktop().browse(url);
+    	           } catch (IOException e) {
+    	               e.printStackTrace();
+    	           }
+    	       }).start();
+    	}
     	return null;
 }
 
