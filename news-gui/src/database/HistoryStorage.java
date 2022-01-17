@@ -28,7 +28,7 @@ public class HistoryStorage {
 		}
 	}
 	
-	public ArrayList<Article> getHistory(int page) {
+	public static ArrayList<Article> getHistory(int page) {
 		ArrayList<Article> historyList= new ArrayList<Article>();
 		int offset = (page-1)*10;
 		String statement = "SELECT articles.* from articles,article_histories WHERE id = article_id order by created_at DESC LIMIT 10 OFFSET "+offset;

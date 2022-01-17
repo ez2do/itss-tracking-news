@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:controller="controller.baseController" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" >
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="768.0" prefWidth="1166.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.baseController">
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
@@ -16,17 +16,17 @@
                   <Font name="System Bold" size="33.0" />
                </font>
             </Label>
-            <Button fx:id="newsButton" layoutX="70.0" layoutY="130.0" mnemonicParsing="false" onAction="#toNews" prefHeight="154.0" prefWidth="271.0" text="TIN TỨC">
+            <Button fx:id="newsButton" layoutX="70.0" layoutY="84.0" mnemonicParsing="false" onAction="#toNews" prefHeight="154.0" prefWidth="271.0" text="TIN TỨC">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="cateButton" layoutX="70.0" layoutY="333.0" mnemonicParsing="false" onAction="#toCategory" prefHeight="154.0" prefWidth="271.0" text="NGUỒN TIN">
+            <Button fx:id="cateButton" layoutX="69.0" layoutY="258.0" mnemonicParsing="false" onAction="#toCategory" prefHeight="154.0" prefWidth="271.0" text="NGUỒN TIN">
                <font>
                   <Font size="24.0" />
                </font>
             </Button>
-            <Button fx:id="exitButton" layoutX="70.0" layoutY="540.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="154.0" prefWidth="271.0" text="THOÁT">
+            <Button fx:id="exitButton" layoutX="69.0" layoutY="599.0" mnemonicParsing="false" onMouseClicked="#exit" prefHeight="154.0" prefWidth="271.0" text="THOÁT">
                <font>
                   <Font size="24.0" />
                </font>
@@ -40,6 +40,11 @@
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="435.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="687.0" layoutY="534.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="908.0" layoutY="540.0" pickOnBounds="true" preserveRatio="true" />
+            <Button layoutX="69.0" layoutY="431.0" mnemonicParsing="false" onAction="#toWatchLater" onMouseClicked="#exit" prefHeight="154.0" prefWidth="271.0" text="XEM SAU" fx:id="xemsauButton">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Button>
          </children>
       </AnchorPane>
    </center>

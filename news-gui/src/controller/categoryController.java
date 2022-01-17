@@ -44,9 +44,6 @@ public class categoryController implements Initializable {
     public ComboBox<String> chude;
 
     @FXML
-    public Label chudeLabel;
-
-    @FXML
     public Button trove;
     
     @FXML
@@ -78,54 +75,16 @@ public class categoryController implements Initializable {
 	
     public Stage stage;
     public Scene scene;
-    public BorderPane root;
-	
-//	ObservableList<Category> cateList = FXCollections.observableArrayList();
-
-
-    public String[] chudeBoxContent = {"VÄƒn hÃ³a & GiÃ¡o dá»¥c","Sá»©c khá»�e & Ä�á»�i sá»‘ng","Khoa há»�c & CÃ´ng nghá»‡","Tháº¿ giá»›i","Thá»�i sá»±","TÃ i chÃ­nh & Kinh doanh","Giáº£i trÃ­","Thá»ƒ thao"};
-    
-    @FXML
-    void selectCategory(ActionEvent event) throws IOException {
-//        s = categoryBox.getSelectionModel().getSelectedItem().toString();
-//        chudeLabel.setText(s);
-    	chude.getItems().addAll(chudeBoxContent);
-    }
+    public BorderPane root;    
     ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory(1));
-    
-//    @Override
-//    void initialize() {
-//    	for(int i = 0; i<10; i++) {
-//    		CheckBox ch = new CheckBox("" + 1);
-//   		cateList.add(new categoryTable("name","source","link", ch)); //connecting to database
-//    	}
-//    	cateTable.setItems(cateList);
-//    	name.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("Name"));
-//    	sourceColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("SourceColumn"));
-//    	linkColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("Link"));
-//    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<categoryTable,CheckBox>("cateCheckBox"));
-//    	cateTable.setItems(cateData);
 
-    @FXML
-    void showCategory(ActionEvent event) {
-//    	System.out.print("hello");
-//    	name.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("Name"));
-//    	sourceColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("SourceColumn"));
-//    	linkColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("Link"));
-//    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<categoryTable,CheckBox>("cateCheckBox"));
-//    	cateTable.setItems(null);
-//    	System.out.print(categories.size());
-//    	cateTable.setItems(categories);
-
-    }
 
     @FXML
     void addSource(ActionEvent event) {
-    	newC.setName(chude.getValue());
-    	newC.setSource(source.getText());
-    	newC.setName(link.getText());
-    	CategoryStorage.addtoCategory(newC.name,newC.source, newC.link);
-    } //done
+    	CategoryStorage.addtoCategory(chude.getValue(),source.getText(), link.getText());
+    	ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory(1));
+    	showCategory(categories);
+    } 
 
     Main sw = new Main();
     
@@ -151,18 +110,29 @@ public class categoryController implements Initializable {
     		cateTable.getItems().remove(cate);
     	}
     }
-
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		// TODO Auto-generated method stub
-//    	System.out.print("hello");
+    
+    public void showCategory(ObservableList<Category> categories) {
     	name.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("name"));
     	sourceColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("source"));
     	linkColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("link"));
-//    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<categoryTable,CheckBox>("cateCheckBox"));
     	cateTable.setItems(null);
-//    	System.out.print(categories.size());
     	cateTable.setItems(categories);
+    }
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		//category box view
+        ObservableList<String> cateBoxContent = FXCollections.observableArrayList(CategoryStorage.getCategoryNames());
+        chude.setItems(cateBoxContent);
+		//cateTable view
+        showCategory(categories);
+//    	name.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("name"));
+//    	sourceColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("source"));
+//    	linkColumn.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("link"));
+////    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<categoryTable,CheckBox>("cateCheckBox"));
+//    	cateTable.setItems(null);
+////    	System.out.print(categories.size());
+//    	cateTable.setItems(categories);
 	}
 
 }

@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javafx.scene.control.Hyperlink;
 import models.Article;
 
 public class ArticleStorage {
@@ -36,6 +37,14 @@ public class ArticleStorage {
 		          String image = rs.getString("image");
 		          String category = rs.getString("category");
 		          String source = rs.getString("source");
+//		          System.out.println("id: " + id);
+//		          System.out.println("title: " + title);
+//		          System.out.println("description: " + description);
+//		          System.out.println("link: " + link);
+//		          System.out.println("published_parsed: " + published_parsed);
+//		          System.out.println("image: " + image);
+//		          System.out.println("category: " + category);
+//		          System.out.println("source: " + source);
 		    	  Article a = new Article(id,title,description,link,published_parsed,image,category,source);
 		    	  articleList.add(a);
 		      }
@@ -50,23 +59,23 @@ public class ArticleStorage {
 	public static String buildQuery(ArticleFilter filter) {
 		ArrayList<String> conditions = new ArrayList<String>();
 		
-		if(filter.keyword.length()!=0) {
+		if(filter.keyword!= null && filter.keyword.length()!=0) {
 			String condition = "(title LIKE '%" + filter.keyword + "%' OR description LIKE '%" + filter.keyword + "%')";
 			conditions.add(condition);
 		}
-		if(filter.category.length()!=0) {
+		if(filter.category != null && filter.category.length()!=0) {
 			String condition = "category = '" + filter.category + "'";
 			conditions.add(condition);
 		}
-		if(filter.source.length()!=0) {
+		if(filter.source != null && filter.source.length()!=0) {
 			String condition = "source = '"+ filter.source + "'";
 			conditions.add(condition);
 		}
-		if(filter.from.length()!=0) {
+		if(filter.from != null && filter.from.length()!=0) {
 			String condition = "published_parsed >= '"+ filter.from + "'";
 			conditions.add(condition);
 		}
-		if(filter.to.length()!=0) {
+		if(filter.to != null && filter.to.length()!=0) {
 			String condition = "published_parsed <= '" + filter.to + " 23:59:59+07:00'";
 			conditions.add(condition);
 		}

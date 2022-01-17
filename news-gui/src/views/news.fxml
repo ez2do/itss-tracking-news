@@ -4,7 +4,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Pagination?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -35,7 +34,7 @@
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <ComboBox fx:id="categoryBox" layoutX="722.0" layoutY="91.0" onAction="#showCategory" prefHeight="26.0" prefWidth="149.0" promptText="Chủ đề" />
+            <ComboBox fx:id="categoryBox" layoutX="722.0" layoutY="91.0" prefHeight="26.0" prefWidth="149.0" promptText="Chủ đề" />
             <Text layoutX="995.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CÀI ĐẶT" wrappingWidth="116.77813720703125">
                <font>
                   <Font name="System Bold" size="27.0" />
@@ -47,13 +46,13 @@
             <Button fx:id="backButton" layoutX="1003.0" layoutY="525.0" mnemonicParsing="false" onAction="#toBase" prefHeight="58.0" prefWidth="150.0" text="Trở về" />
             <TableView fx:id="newsTable" layoutX="14.0" layoutY="159.0" prefHeight="554.0" prefWidth="970.0">
               <columns>
-                <TableColumn fx:id="image" prefWidth="155.1999969482422" text="Hình ảnh" />
-                <TableColumn fx:id="title" prefWidth="154.4000244140625" text="Tiêu đề" />
-                  <TableColumn fx:id="description" prefWidth="266.4000244140625" text="Nội dung" />
-                  <TableColumn fx:id="source" prefWidth="94.39996337890625" text="Nguồn" />
-                  <TableColumn fx:id="category" prefWidth="124.0" text="Chủ đề" />
-                  <TableColumn fx:id="articleDate" prefWidth="128.0" text="Ngày cập nhật" />
-                  <TableColumn fx:id="checkarticle" prefWidth="44.80001220703127" text="Check" />
+                <TableColumn fx:id="image" editable="false" prefWidth="155.1999969482422" text="Hình ảnh" />
+                <TableColumn fx:id="hyperLink" editable="false" prefWidth="154.4000244140625" text="Tiêu đề" />
+                  <TableColumn fx:id="description" editable="false" prefWidth="256.0000305175781" text="Nội dung" />
+                  <TableColumn fx:id="source" editable="false" prefWidth="94.39996337890625" text="Nguồn" />
+                  <TableColumn fx:id="category" editable="false" prefWidth="107.20001220703125" text="Chủ đề" />
+                  <TableColumn fx:id="articleDate" editable="false" prefWidth="133.5999755859375" text="Ngày cập nhật" />
+                  <TableColumn prefWidth="70.4000244140625" text="Xem sau" fx:id="xemsau" />
               </columns>
             </TableView>
             <Label layoutX="1054.0" layoutY="501.0" prefHeight="24.0" prefWidth="35.0" />
@@ -74,7 +73,15 @@
             </RadioButton>
             <RadioButton fx:id="save2" layoutX="1013.0" layoutY="395.0" mnemonicParsing="false" text="1 tháng " toggleGroup="$save" />
             <DatePicker fx:id="searchDate1" layoutX="885.0" layoutY="91.0" promptText="Từ ngày" />
-            <Pagination fx:id="pagination" layoutX="261.0" layoutY="567.0" maxPageIndicatorCount="5" prefHeight="200.0" prefWidth="457.0" />
+            <Button fx:id="back" layoutX="330.0" layoutY="728.0" mnemonicParsing="false" onAction="#goBack" text="Trước" />
+            <Button fx:id="foward" layoutX="565.0" layoutY="728.0" mnemonicParsing="false" onAction="#goFront" text="Sau" />
+            <Label fx:id="currentPage" layoutX="421.0" layoutY="732.0" text="Label" />
+            <Label fx:id="allPage" layoutX="499.0" layoutY="732.0" text="Label" />
+            <Text layoutX="468.0" layoutY="745.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/">
+               <font>
+                  <Font name="System Bold" size="24.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </center>
