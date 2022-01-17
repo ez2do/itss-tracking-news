@@ -67,7 +67,7 @@ public class ArticleStorage {
 			conditions.add(condition);
 		}
 		if(filter.to.length()!=0) {
-			String condition = "published_parsed <= '" + filter.to + "'";
+			String condition = "published_parsed <= '" + filter.to + " 23:59:59+07:00'";
 			conditions.add(condition);
 		}
 		
@@ -96,7 +96,7 @@ public class ArticleStorage {
 		return count;
 	}
 	
-	public int pageCount(ArticleFilter filter) {
+	public static int pageCount(ArticleFilter filter) {
 		int n = countArticle(filter);
 		if(n%10==0 && n!=0) return n/10; 
 		
