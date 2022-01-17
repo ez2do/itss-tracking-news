@@ -63,11 +63,11 @@ public class ArticleStorage {
 			String condition = "(title LIKE '%" + filter.keyword + "%' OR description LIKE '%" + filter.keyword + "%')";
 			conditions.add(condition);
 		}
-		if(filter.category != null && filter.category.length()!=0) {
+		if(filter.category != null && filter.category.length()!=0 && !filter.category.equals("Chủ đề: Tất cả")) {
 			String condition = "category = '" + filter.category + "'";
 			conditions.add(condition);
 		}
-		if(filter.source != null && filter.source.length()!=0) {
+		if(filter.source != null && filter.source.length()!=0 && !filter.source.equals("Nguồn: Tất cả")) {
 			String condition = "source = '"+ filter.source + "'";
 			conditions.add(condition);
 		}

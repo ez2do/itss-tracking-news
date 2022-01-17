@@ -144,6 +144,7 @@ public class historyController implements Initializable{
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				HistoryStorage.addtoHistory(article.id);
 			});
 			later.get(i).hyperLink = myHyperLink;
     	}
@@ -155,7 +156,16 @@ public class historyController implements Initializable{
     	hisTable.setItems(histories);
     }
     private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
-    	Desktop.getDesktop().browse(url);
+    	if( Desktop.isDesktopSupported() )
+    	{
+    	    new Thread(() -> {
+    	           try {
+    	               Desktop.getDesktop().browse(url);
+    	           } catch (IOException e) {
+    	               e.printStackTrace();
+    	           }
+    	       }).start();
+    	}
     	return null;
 }
 
