@@ -105,7 +105,7 @@ public class ArticleStorage {
 		return count;
 	}
 	
-	public int pageCount(ArticleFilter filter) {
+	public static int pageCount(ArticleFilter filter) {
 		int n = countArticle(filter);
 		if(n%10==0 && n!=0) return n/10; 
 		

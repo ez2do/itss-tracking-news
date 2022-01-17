@@ -6,14 +6,8 @@ import models.newsTable;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.net.URI;
-
-import javafx.animation.Animation.Status;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -32,7 +26,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Pagination;
+import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -48,13 +42,12 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import views.Main;
 import models.Article;
-import models.Category;
-import models.newsTable;
 import database.ArticleFilter;
 import database.ArticleStorage;
 import database.CategoryStorage;
 import database.HistoryStorage;
 import database.SettingStorage;
+import database.WatchLaterStorage;
 
 
 public class newsController extends Application implements Initializable  {
@@ -65,9 +58,19 @@ public class newsController extends Application implements Initializable  {
 	}
 
 	Main sw = new Main();
+	
 
     	@FXML
-    	private Pagination newsPage;
+    	private Label allPage;
+    
+    	@FXML
+    	private Button back;
+    
+    	@FXML
+    	private Label currentPage;
+    
+    	@FXML
+    	private Button foward;
 
 	    @FXML
 	    public ResourceBundle resources;
@@ -89,6 +92,9 @@ public class newsController extends Application implements Initializable  {
 	    
 	    @FXML
 	    public TableColumn<newsTable, CheckBox> checkArticle;
+	    
+	    @FXML 
+	    TableColumn<newsTable, Button> xemsau;
 
 	    @FXML
 	    public Button historyButton;
@@ -154,33 +160,33 @@ public class newsController extends Application implements Initializable  {
 	    public Scene scene;
 	    public BorderPane root;
 	    
-	    ArticleFilter myFilter = new ArticleFilter();
-	    ArticleStorage articleStorage;
-	    SettingStorage settingStorage;
+//	    ArticleFilter myFilter = new ArticleFilter();
+//	    ArticleStorage articleStorage;
+//	    SettingStorage settingStorage;
 	    
-		public newsController(ArticleStorage articleStorage, SettingStorage settingStorage) {
-			super();
-			this.articleStorage = articleStorage;
-			this.settingStorage = settingStorage;
-		}
+//		public newsController(ArticleStorage articleStorage, SettingStorage settingStorage) {
+//			super();
+//			this.articleStorage = articleStorage;
+//			this.settingStorage = settingStorage;
+//		}
 
     @FXML
     void save1(MouseEvent event) {
     	if(save1.isSelected()) {
-    		settingStorage.updateDay(7);
+    		SettingStorage.updateDay(7);
     	}
     }
 
     @FXML
     void save2(MouseEvent event) {
     	if(save2.isSelected()) {
-    		settingStorage.updateDay(30);
+    		SettingStorage.updateDay(30);
     	}
     }
+	ArticleFilter mySearchFilter = new ArticleFilter();
 
     @FXML
     void searchNews(ActionEvent event) {
-    	ArticleFilter mySearchFilter = new ArticleFilter();
     	if(searchField.getText() != null) mySearchFilter.setKeyword(searchField.getText());
     	if(categoryBox.getValue() != null) mySearchFilter.setCategory(categoryBox.getValue());
     	if(sourceBox.getValue() != null) mySearchFilter.setSource(sourceBox.getValue());
@@ -203,13 +209,11 @@ public class newsController extends Application implements Initializable  {
     		alert.showAndWait();
     		return;
     	}
-    	showNewsTable(articles);
+    	currentPage.setText(String.valueOf(mySearchFilter.page));
+    	allPage.setText(String.valueOf(ArticleStorage.pageCount(mySearchFilter)));
+    	showNewsTable(articles);   	
     }
-
-//    @FXML
-//    void showCategory(ActionEvent event) {
-//    	categoryBox.setItems(cateBoxContent);
-//    }
+    
 
     @FXML
     void toBase(ActionEvent event) throws IOException {
@@ -231,29 +235,40 @@ public class newsController extends Application implements Initializable  {
 
     @FXML
     void update1(ActionEvent event) {
-
+    	if(update1.isSelected()) {
+    		SettingStorage.updateHour(3);
+    	}
     }
 
     @FXML
     void update2(MouseEvent event) {
     	if(update2.isSelected()) {
-    		settingStorage.updateHour(6);
+    		SettingStorage.updateHour(6);
     	}
     }
 
     @FXML
     void update3(MouseEvent event) {
     	if(update3.isSelected()) {
-    		settingStorage.updateHour(9);
+    		SettingStorage.updateHour(9);
     	}
     }
     
-    ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(myFilter));
+    ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(mySearchFilter));
     
-    
+    int i;
     public void showNewsTable(ObservableList<Article> articles) {
-    	for (int i = 0; i < articles.size(); i++) {
+    	for ( i = 0; i < articles.size(); i++) {
     		Article article = articles.get(i);
+    		//button
+    		Button button = new Button();
+    		button.setText("Xem sau");
+    		button.setOnAction(e -> {
+    			WatchLaterStorage.addtoWatchLater(article.id);
+    			System.out.print(article.id);
+    		});
+    		articles.get(i).button = button;
+        	//image
     		Image image = new Image(article.image);
     		ImageView imageView = new ImageView(image);
     		// set width height
@@ -261,7 +276,7 @@ public class newsController extends Application implements Initializable  {
     		articles.get(i).image_view = imageView;
     		imageView.setFitHeight(100);
     		imageView.setFitWidth(180);
-    		
+    		//hyperlink
     		Hyperlink myHyperLink = new Hyperlink();
     		
     		myHyperLink.setText(article.title);
@@ -289,6 +304,8 @@ public class newsController extends Application implements Initializable  {
     	source.setCellValueFactory(new PropertyValueFactory<newsTable,String>("source"));
     	articleDate.setCellValueFactory(new PropertyValueFactory<newsTable,String>("published_parsed"));
     	hyperLink.setCellValueFactory(new PropertyValueFactory<newsTable,Hyperlink>("hyperLink"));
+    	xemsau.setCellValueFactory(new PropertyValueFactory<newsTable,Button>("button"));
+    	//wrap text
     	description.setCellFactory(tc -> {
     	    TableCell<newsTable, String> cell = new TableCell<>();
     	    Text text = new Text();
@@ -310,8 +327,30 @@ public class newsController extends Application implements Initializable  {
     	newsTable.setItems(articles);
     }
     
+    @FXML
+    void goBack(ActionEvent event) {
+    	if(mySearchFilter.page > 1) {
+    		mySearchFilter.page -= 1;
+    		currentPage.setText(String.valueOf(mySearchFilter.page));
+    		articles = FXCollections.observableArrayList(ArticleStorage.getArticle(mySearchFilter));
+    		showNewsTable(articles);
+    	}
+    }
+
+    @FXML
+    void goFront(ActionEvent event) {
+    	if(mySearchFilter.page < ArticleStorage.pageCount(mySearchFilter)) {
+    		mySearchFilter.page += 1;
+    		currentPage.setText(String.valueOf(mySearchFilter.page));
+    		articles = FXCollections.observableArrayList(ArticleStorage.getArticle(mySearchFilter));
+    		showNewsTable(articles);
+    	}
+    }
+    
     @Override
 	public void initialize(URL url, ResourceBundle rb){
+    	currentPage.setText(String.valueOf(mySearchFilter.page));
+    	allPage.setText(String.valueOf(ArticleStorage.pageCount(mySearchFilter)));
     	//set default for RadioButoon update and save
     	int hour = SettingStorage.getSettingValueByKey(SettingStorage.updateIntervalHourKey);
     	if(hour ==3) update1.setSelected(true);

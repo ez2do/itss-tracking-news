@@ -3,9 +3,8 @@ package controller;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
-import database.ArticleStorage;
 import database.HistoryStorage;
+import database.WatchLaterStorage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,9 +14,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -28,76 +25,76 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import models.Article;
 import views.Main;
-public class historyController implements Initializable{
-		
-		
-	
+
+public class watchLaterController implements Initializable{
+
+    @FXML
+    private ResourceBundle resources;
+
+    @FXML
+    private URL location;
+    
     @FXML
     private Label currentPage;
     
     @FXML
     private Label maxPage;
-    
+
     @FXML
     private Button next;
 
     @FXML
     private Button previous;
-    	
-	 	@FXML
-	    public TableColumn<Article, String> category;
 
-	    @FXML
-	    public Button deleteButton;
+    @FXML
+    private TableColumn<Article, String> category;
 
-	    @FXML
-	    public TableColumn<Article, String> description;
 
-	    @FXML
-	    public TableColumn<Article, String> hisBox;
+    @FXML
+    private TableColumn<Article,String> description;
 
-	    @FXML
-	    public TableView<Article> hisTable;
+    @FXML
+    private TableColumn<Article, Button> hisBox;
 
-	    @FXML
-	    public TableColumn<Article, ImageView> image;
+    @FXML
+    private TableColumn<Article, ImageView> image;
 
-	    @FXML
-	    public CheckBox selectAllBox;
+    @FXML
+    private TableView<Article> laterTable;
 
-	    @FXML
-	    public TableColumn<Article, String> source;
+    @FXML
+    private TableColumn<Article, String> source;
 
-	    @FXML
-	    public TableColumn<Article, String> title;
+    @FXML
+    private TableColumn<Article, String> title;
 
-	    @FXML
-	    public Button troveButton;
-	    
-	    public Stage stage;
-	    public Scene scene;
-	    public BorderPane root;
-    
+    @FXML
+    private Button troveButton;
+
+    public Stage stage;
+    public Scene scene;
+    public BorderPane root;
+
     Main sw = new Main();
-    int historyPage ;
-    
+
+    int laterPage;
 	ObservableList<Article> histories = FXCollections.observableArrayList(HistoryStorage.getHistory(1));
     @FXML
     void previousPage(ActionEvent event) {
-    	if(historyPage >1) {
-    		historyPage -= 1;
-    		currentPage.setText(String.valueOf(historyPage));
-    		histories = FXCollections.observableArrayList(HistoryStorage.getHistory(historyPage));
+    	if(laterPage >1) {
+    		laterPage -= 1;
+    		currentPage.setText(String.valueOf(laterPage));
+    		histories = FXCollections.observableArrayList(HistoryStorage.getHistory(laterPage));
     		showHistoryTable(histories);
     	}
     }
 
     @FXML
     void nextPage(ActionEvent event) {
-    	if(historyPage < HistoryStorage.pageCount() ) {
-    		historyPage += 1;
-    		currentPage.setText(String.valueOf(historyPage));
-    		histories = FXCollections.observableArrayList(HistoryStorage.getHistory(historyPage));
+    	if(laterPage < HistoryStorage.pageCount() ) {
+    		laterPage += 1;
+    		currentPage.setText(String.valueOf(laterPage));
+    		histories = FXCollections.observableArrayList(HistoryStorage.getHistory(laterPage));
     		showHistoryTable(histories);
     	}
     }
@@ -128,19 +125,18 @@ public class historyController implements Initializable{
     	image.setCellValueFactory(new PropertyValueFactory<Article,ImageView>("image_view"));
     	source.setCellValueFactory(new PropertyValueFactory<Article,String>("source"));
     	title.setCellValueFactory(new PropertyValueFactory<Article,String>("title"));
-    	hisTable.setItems(null);
-    	hisTable.setItems(histories);
+    	laterTable.setItems(null);
+    	laterTable.setItems(histories);
     }
 
     @Override
 	public void initialize(URL url, ResourceBundle rb){
-    	historyPage =1;
+    	laterPage =1;
     	//page
-    	currentPage.setText(String.valueOf(historyPage));
+    	currentPage.setText(String.valueOf(laterPage));
     	maxPage.setText(String.valueOf(HistoryStorage.pageCount()));
         showHistoryTable(histories);
     }
+
 }
-
-
 

@@ -42,6 +42,17 @@ public class baseController {
 	public Button newsButton;
 	@FXML
 	public Button exitButton;
+    @FXML
+    private Button xemsauButton;
+    
+    @FXML
+    void toWatchLater(ActionEvent event) throws IOException {
+    	BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("../views/watchLater.fxml"));
+    	stage = (Stage)((Node)event.getSource()).getScene().getWindow();
+    	Scene scene = new Scene(root,1166,768);
+    	stage.setScene(scene);
+    	stage.show();
+    }
 
     @FXML
     void toCategory(ActionEvent event) throws IOException {

@@ -1,5 +1,6 @@
 package models;
 
+import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.image.ImageView;
 
@@ -14,6 +15,7 @@ public class Article {
 	public String source;
 	public ImageView image_view;
 	public Hyperlink hyperLink;
+	public Button button;
 
 	public Article(int id, String title, String description, String link, String published_parsed, String image,
 			String category, String source, ImageView image_view) {
@@ -27,6 +29,30 @@ public class Article {
 		this.category = category;
 		this.source = source;
 		this.image_view = image_view;
+	}
+
+	public Button getButton() {
+		return button;
+	}
+
+	public void setButton(Button button) {
+		this.button = button;
+	}
+
+	public Article(int id, String title, String description, String link, String published_parsed, String image,
+			String category, String source, ImageView image_view, Hyperlink hyperLink, Button button) {
+		super();
+		this.id = id;
+		this.title = title;
+		this.description = description;
+		this.link = link;
+		this.published_parsed = published_parsed;
+		this.image = image;
+		this.category = category;
+		this.source = source;
+		this.image_view = image_view;
+		this.hyperLink = hyperLink;
+		this.button = button;
 	}
 
 	public Article(int id, String title, String description, String link, String published_parsed, String image,
