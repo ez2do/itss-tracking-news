@@ -141,6 +141,7 @@ public class watchLaterController implements Initializable{
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				HistoryStorage.addtoHistory(article.id);
 			});
 			later.get(i).hyperLink = myHyperLink;
     	}
@@ -152,7 +153,16 @@ public class watchLaterController implements Initializable{
     	laterTable.setItems(later);
     }
     private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
-    	Desktop.getDesktop().browse(url);
+    	if( Desktop.isDesktopSupported() )
+    	{
+    	    new Thread(() -> {
+    	           try {
+    	               Desktop.getDesktop().browse(url);
+    	           } catch (IOException e) {
+    	               e.printStackTrace();
+    	           }
+    	       }).start();
+    	}
     	return null;
 }
 
@@ -161,9 +171,8 @@ public class watchLaterController implements Initializable{
     	laterPage =1;
     	//page
     	currentPage.setText(String.valueOf(laterPage));
-    	maxPage.setText(String.valueOf(HistoryStorage.pageCount()));
+    	maxPage.setText(String.valueOf(WatchLaterStorage.pageCount()));
         showLaterTable(later);
     }
-
 }
 

@@ -39,6 +39,7 @@ public class CategoryStorage {
 	public static String[] getCategoryNames() {
 		String sql = "Select distinct name from categories";
 		ArrayList<String> nameslist = new ArrayList<String>();
+		nameslist.add("Chủ đề: Tất cả");
 		PreparedStatement ps = null;
 	    ResultSet rs = null;
 	    try {
@@ -58,6 +59,7 @@ public class CategoryStorage {
 	public static String[] getCategorySources() {
 		String sql = "Select distinct source from categories";
 		ArrayList<String> sourceslist = new ArrayList<String>();
+		sourceslist.add("Nguồn: Tất cả");
 		PreparedStatement ps = null;
 	    ResultSet rs = null;
 	    try {

@@ -170,16 +170,14 @@ public class newsController extends Application implements Initializable  {
 //			this.settingStorage = settingStorage;
 //		}
 
+
+    
     @FXML
-    void save1(MouseEvent event) {
+    void saveSettingDay(ActionEvent event) {
     	if(save1.isSelected()) {
     		SettingStorage.updateDay(7);
     	}
-    }
-
-    @FXML
-    void save2(MouseEvent event) {
-    	if(save2.isSelected()) {
+    	else {
     		SettingStorage.updateDay(30);
     	}
     }
@@ -233,23 +231,16 @@ public class newsController extends Application implements Initializable  {
     	stage.show();
     }
 
+
     @FXML
-    void update1(ActionEvent event) {
+    void updateSettingHour(ActionEvent event) {
     	if(update1.isSelected()) {
     		SettingStorage.updateHour(3);
     	}
-    }
-
-    @FXML
-    void update2(MouseEvent event) {
-    	if(update2.isSelected()) {
+    	else if(update2.isSelected()) {
     		SettingStorage.updateHour(6);
     	}
-    }
-
-    @FXML
-    void update3(MouseEvent event) {
-    	if(update3.isSelected()) {
+    	else {
     		SettingStorage.updateHour(9);
     	}
     }
