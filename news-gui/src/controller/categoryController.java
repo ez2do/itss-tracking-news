@@ -76,13 +76,13 @@ public class categoryController implements Initializable {
     public Stage stage;
     public Scene scene;
     public BorderPane root;    
-    ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory(1));
+    ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory());
 
 
     @FXML
     void addSource(ActionEvent event) {
     	CategoryStorage.addtoCategory(chude.getValue(),source.getText(), link.getText());
-    	ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory(1));
+    	ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory());
     	showCategory(categories);
     } 
 

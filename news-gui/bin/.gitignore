@@ -1,5 +1,4 @@
-/controller/
 /database/
-/views/
 /models/
-/news-gui.iml
+/controller/
+/views/
