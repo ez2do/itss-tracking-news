@@ -22,7 +22,7 @@ public class Article {
 		this.title = title;
 		this.description = description;
 		this.link = link;
-		this.published_parsed = published_parsed;
+		this.published_parsed = published_parsed.substring(0,10);
 		this.image = image;
 		this.category = category;
 		this.source = source;
@@ -36,7 +36,7 @@ public class Article {
 		this.title = title;
 		this.description = description;
 		this.link = link;
-		this.published_parsed = published_parsed;
+		this.published_parsed = published_parsed.substring(0,10);
 		this.image = image;
 		this.category = category;
 		this.source = source;

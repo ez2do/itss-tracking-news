@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.net.URI;
+
+import javafx.animation.Animation.Status;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,9 +24,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Pagination;
@@ -39,6 +44,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import views.Main;
 import models.Article;
@@ -47,6 +53,7 @@ import models.newsTable;
 import database.ArticleFilter;
 import database.ArticleStorage;
 import database.CategoryStorage;
+import database.HistoryStorage;
 import database.SettingStorage;
 
 
@@ -58,6 +65,9 @@ public class newsController extends Application implements Initializable  {
 	}
 
 	Main sw = new Main();
+
+    	@FXML
+    	private Pagination newsPage;
 
 	    @FXML
 	    public ResourceBundle resources;
@@ -135,9 +145,6 @@ public class newsController extends Application implements Initializable  {
 	    public TableColumn<newsTable, String> articleDate;
 	    
 	    @FXML
-	    public Pagination pagination;
-	    
-	    @FXML
 	    public DatePicker searchDate1;
 	    
 	    @FXML
@@ -157,19 +164,6 @@ public class newsController extends Application implements Initializable  {
 			this.settingStorage = settingStorage;
 		}
 
-//    public newsController(TableColumn<Article, String> category, TableColumn<Article, String> description,
-//			TableColumn<Article, String> image, TableColumn<Article, String> source,
-//			TableColumn<Article, String> title, TableColumn<Article,String> articleDate, CheckBox articleCheckBox) {
-//			super();
-//			this.category = category;
-//			this.description = description;
-//			this.image = image;
-//			this.source = source;
-//			this.title = title;
-//			this.articleDate = articleDate;
-//			this.articleCheckBox = articleCheckBox;
-//		}
-
     @FXML
     void save1(MouseEvent event) {
     	if(save1.isSelected()) {
@@ -186,19 +180,36 @@ public class newsController extends Application implements Initializable  {
 
     @FXML
     void searchNews(ActionEvent event) {
-    	myFilter.setKeyword(searchField.getText());
-    	myFilter.setCategory(categoryBox.getValue());
-    	myFilter.setSource(sourceBox.getValue());
-    	myFilter.setFrom(searchDate1.getValue().format(DateTimeFormatter.ofPattern("yyyy-mm-dd")));
-    	myFilter.setTo(searchDate2.getValue().format(DateTimeFormatter.ofPattern("yyyy-mm-dd")));
-    	ArticleStorage.buildQuery(myFilter);
+    	ArticleFilter mySearchFilter = new ArticleFilter();
+    	if(searchField.getText() != null) mySearchFilter.setKeyword(searchField.getText());
+    	if(categoryBox.getValue() != null) mySearchFilter.setCategory(categoryBox.getValue());
+    	if(sourceBox.getValue() != null) mySearchFilter.setSource(sourceBox.getValue());
+    	if(searchDate1.getValue() != null) mySearchFilter.setFrom(searchDate1.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    	if(searchDate2.getValue() != null) mySearchFilter.setTo(searchDate2.getValue().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    	if(searchDate1.getValue() != null && searchDate2.getValue() != null && !searchDate2.getValue().isAfter(searchDate1.getValue())) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Lỗi thông tin tìm kiếm");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Giá trị của ngày bắt đầu phải trước ngày kết thúc, hãy thử lại.");
+    		alert.showAndWait();
+    		return;
+    	}
+    	ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(mySearchFilter));
+    	if(articles.isEmpty()) {
+    		Alert alert = new Alert(AlertType.INFORMATION);
+    		alert.setTitle("Rỗng");
+    		alert.setHeaderText(null);
+    		alert.setContentText("Không có bất kì kết quả nào cho thông tin bạn tìm.");
+    		alert.showAndWait();
+    		return;
+    	}
+    	showNewsTable(articles);
     }
 
-    ObservableList<String> cateBoxContent = FXCollections.observableArrayList("Văn hóa & Giáo dục","Sức khỏe & Đời sống","Khoa học & Công nghệ","Thời sự","Thế giới","Tài chính & Kinh doanh","Giải trí","Thể thao");
-    @FXML
-    void showCategory(ActionEvent event) {
-    	categoryBox.setItems(cateBoxContent);
-    }
+//    @FXML
+//    void showCategory(ActionEvent event) {
+//    	categoryBox.setItems(cateBoxContent);
+//    }
 
     @FXML
     void toBase(ActionEvent event) throws IOException {
@@ -220,9 +231,7 @@ public class newsController extends Application implements Initializable  {
 
     @FXML
     void update1(ActionEvent event) {
-    	if(update1.isSelected()) {
-    		settingStorage.updateHour(3);
-    	}
+
     }
 
     @FXML
@@ -241,19 +250,8 @@ public class newsController extends Application implements Initializable  {
     
     ObservableList<Article> articles = FXCollections.observableArrayList(ArticleStorage.getArticle(myFilter));
     
-//    Hyperlink link = new Hyperlink();
-//    link.setText("http://example.com");
-//    link.setOnAction(new EventHandler<ActionEvent>() {
-//        @Override
-//        public void handle(ActionEvent e) {
-//            System.out.println("This link is clicked");
-//        }
-//    };
     
-    
-    
-    @Override
-	public void initialize(URL url, ResourceBundle rb){
+    public void showNewsTable(ObservableList<Article> articles) {
     	for (int i = 0; i < articles.size(); i++) {
     		Article article = articles.get(i);
     		Image image = new Image(article.image);
@@ -264,18 +262,6 @@ public class newsController extends Application implements Initializable  {
     		imageView.setFitHeight(100);
     		imageView.setFitWidth(180);
     		
-//    		Hyperlink hyperLink = new Hyperlink(article.link);
-//    		List<Hyperlink> linkList = new ArrayList<>();
-//    		linkList.add(hyperLink);
-//            for(final Hyperlink hyperlink : linkList) {
-//                hyperlink.setOnAction(new EventHandler<ActionEvent>() {
-//
-//                    @Override
-//                    public void handle(ActionEvent t) {
-//                        getHostServices().showDocument(hyperlink.getText());
-//                    }
-//                });
-//            }
     		Hyperlink myHyperLink = new Hyperlink();
     		
     		myHyperLink.setText(article.title);
@@ -292,6 +278,8 @@ public class newsController extends Application implements Initializable  {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				
+				HistoryStorage.addtoHistory(article.id); //add read to history
 			});
 			articles.get(i).hyperLink = myHyperLink;
     	}
@@ -301,17 +289,58 @@ public class newsController extends Application implements Initializable  {
     	source.setCellValueFactory(new PropertyValueFactory<newsTable,String>("source"));
     	articleDate.setCellValueFactory(new PropertyValueFactory<newsTable,String>("published_parsed"));
     	hyperLink.setCellValueFactory(new PropertyValueFactory<newsTable,Hyperlink>("hyperLink"));
-//    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<newsTable,CheckBox>("cateCheckBox"));
-    	
-//    	category.setCellValueFactory(cellData -> cellData.getValue().category());
-    	newsTable.setItems(null);
+    	description.setCellFactory(tc -> {
+    	    TableCell<newsTable, String> cell = new TableCell<>();
+    	    Text text = new Text();
+    	    cell.setGraphic(text);
+    	    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+    	    text.wrappingWidthProperty().bind(description.widthProperty());
+    	    text.textProperty().bind(cell.itemProperty());
+    	    return cell ;
+    	});
+//    	hyperLink.setCellFactory(tc -> {
+//    	    TableCell<newsTable, Hyperlink> cell = new TableCell<>();
+//    	    Text text = new Text();
+//    	    cell.setGraphic(text);
+//    	    cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+//    	    text.wrappingWidthProperty().bind(hyperLink.widthProperty());
+//    	    text.textProperty().bind(cell.itemProperty());
+//    	    return cell ;
+//    	});
     	newsTable.setItems(articles);
+    }
+    
+    @Override
+	public void initialize(URL url, ResourceBundle rb){
+    	//set default for RadioButoon update and save
+    	int hour = SettingStorage.getSettingValueByKey(SettingStorage.updateIntervalHourKey);
+    	if(hour ==3) update1.setSelected(true);
+    	else if(hour ==6) update2.setSelected(true);
+    	else update3.setSelected(true);
+    	
+    	int day = SettingStorage.getSettingValueByKey(SettingStorage.deleteIntervalDayKey);
+    	if(day == 7) save1.setSelected(true);
+    	else save2.setSelected(true);
+    	//set default for filter
+    	categoryBox.setValue(null);
+    	sourceBox.setValue(null);
+    	searchDate1.setValue(null);
+    	searchDate2.setValue(null);
+
+    	//categoryBox content
+        ObservableList<String> cateBoxContent = FXCollections.observableArrayList(CategoryStorage.getCategoryNames());
+        categoryBox.setItems(cateBoxContent);
+    	
+        ObservableList<String> sourceBoxContent = FXCollections.observableArrayList(CategoryStorage.getCategorySources());
+        sourceBox.setItems(sourceBoxContent);
+        
+        //newsTable view
+        showNewsTable(this.articles);
     }
 
     private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
     	Desktop.getDesktop().browse(url);
     	return null;
-	
 }
 
 	@Override

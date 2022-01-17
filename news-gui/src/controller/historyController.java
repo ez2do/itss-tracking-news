@@ -1,29 +1,38 @@
 package controller;
 
 import java.io.IOException;
-//import java.net.URL;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.net.URL;
 import java.util.ResourceBundle;
+import database.HistoryStorage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import models.Article;
 import views.Main;
-import java.time.format.DateTimeFormatter;
-public class historyController {
-
-	 @FXML
+public class historyController implements Initializable{
+		
+		
+	
+    	@FXML
+    	private Pagination historyPage;
+    	
+	 	@FXML
 	    public TableColumn<Article, String> category;
 
 	    @FXML
@@ -33,28 +42,19 @@ public class historyController {
 	    public TableColumn<Article, String> description;
 
 	    @FXML
-	    public DatePicker endDatepicker;
-
-	    @FXML
 	    public TableColumn<Article, String> hisBox;
 
 	    @FXML
 	    public TableView<Article> hisTable;
 
 	    @FXML
-	    public TableColumn<Article, String> image;
+	    public TableColumn<Article, ImageView> image;
 
 	    @FXML
 	    public CheckBox selectAllBox;
 
 	    @FXML
-	    public Button showButton;
-
-	    @FXML
 	    public TableColumn<Article, String> source;
-
-	    @FXML
-	    public DatePicker startDatePicker;
 
 	    @FXML
 	    public TableColumn<Article, String> title;
@@ -69,21 +69,6 @@ public class historyController {
     Main sw = new Main();
     
     
-//    @FXML
-//    void ShowByDate(ActionEvent event) {
-//    	LocalDate myStartDate = startDatePicker.getValue();
-//    	String formatStartDate = myStartDate.format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
-//    	LocalDate myEndDate = endDatepicker.getValue();
-//    	String formatEndDate = myEndDate.format(DateTimeFormatter.ofPattern("YYYY-MM-DD"));
-//    	int dateCheck = formatStartDate.compareTo(formatEndDate);
-//    	
-//    	if (dateCheck <= 0) {
-//    		
-//    	}
-//    	else {
-//    		//tao 1 label thong bao date ko hop le
-//    	}
-//    }
 
     @FXML
     void deleteSelected(ActionEvent event) {
@@ -100,11 +85,35 @@ public class historyController {
     	stage.setScene(scene);
     	stage.show();
     }
-
-//    @FXML
-//    void initialize() {
-//
-//    }
-
+	ObservableList<Article> histories = FXCollections.observableArrayList(HistoryStorage.getHistory(historyPage.getCurrentPageIndex()));
+    @Override
+	public void initialize(URL url, ResourceBundle rb){
+        
+        //hisTable view
+    	for (int i = 0; i < histories.size(); i++) {
+    		//ImageView
+    		Article article = histories.get(i);
+    		Image image = new Image(article.image);
+    		ImageView imageView = new ImageView(image);
+    		// set width height
+    		
+    		histories.get(i).image_view = imageView;
+    		imageView.setFitHeight(100);
+    		imageView.setFitWidth(180);
+    	}
+    	category.setCellValueFactory(new PropertyValueFactory<Article,String>("category"));
+    	description.setCellValueFactory(new PropertyValueFactory<Article,String>("description"));
+    	image.setCellValueFactory(new PropertyValueFactory<Article,ImageView>("image_view"));
+    	source.setCellValueFactory(new PropertyValueFactory<Article,String>("source"));
+    	title.setCellValueFactory(new PropertyValueFactory<Article,String>("title"));
+//    	hyperLink.setCellValueFactory(new PropertyValueFactory<newsTable,Hyperlink>("hyperLink"));
+//    	cateCheckBox.setCellValueFactory(new PropertyValueFactory<newsTable,CheckBox>("cateCheckBox"));
+    	
+//    	category.setCellValueFactory(cellData -> cellData.getValue().category());
+    	hisTable.setItems(null);
+    	hisTable.setItems(histories);
+    }
 }
+
+
 
