@@ -15,12 +15,11 @@ public class CategoryStorage {
 	}
 
 
-	public static ArrayList<Category> getCategory(int page){
+	public static ArrayList<Category> getCategory(){
 		ArrayList<Category> categoryList = new ArrayList<Category>();
 		PreparedStatement ps = null; 
 	    ResultSet rs = null;
-	    int offset = (page-1)*10;
-	    String sql = "SELECT * FROM categories LIMIT 10 OFFSET "+offset;
+	    String sql = "SELECT * FROM categories";
 	    try {
 		      ps = db.prepareStatement(sql); 
 		      rs = ps.executeQuery();
@@ -76,26 +75,26 @@ public class CategoryStorage {
 	}
 	
 	
-	public static int countCategory() {
-		String statement = "SELECT COUNT(*) FROM categories";
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		int count =0;
-		try {
-		      ps = db.prepareStatement(statement); 
-		      rs = ps.executeQuery();
-		      count = rs.getInt(1);
-		} catch(SQLException e) {
-		      System.out.println(e.toString());
-		}
-		return count;
-	}
-	
-	public static int pageCount() {
-		int n = countCategory();
-		if(n%10==0 && n!=0) return n/10;
-		return n/10+1;
-	}
+//	public static int countCategory() {
+//		String statement = "SELECT COUNT(*) FROM categories";
+//		PreparedStatement ps = null;
+//		ResultSet rs = null;
+//		int count =0;
+//		try {
+//		      ps = db.prepareStatement(statement); 
+//		      rs = ps.executeQuery();
+//		      count = rs.getInt(1);
+//		} catch(SQLException e) {
+//		      System.out.println(e.toString());
+//		}
+//		return count;
+//	}
+//	
+//	public static int pageCount() {
+//		int n = countCategory();
+//		if(n%10==0 && n!=0) return n/10;
+//		return n/10+1;
+//	}
 	
 	public static void addtoCategory(String name, String source, String link) {
 	    PreparedStatement ps = null;
