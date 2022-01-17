@@ -22,7 +22,7 @@
             <TableView fx:id="laterTable" layoutX="27.0" layoutY="113.0" prefHeight="603.0" prefWidth="902.0">
               <columns>
                 <TableColumn fx:id="image" prefWidth="147.99993896484375" text="Hình ảnh" />
-                  <TableColumn fx:id="title" prefWidth="176.0" text="Tiêu đề" />
+                  <TableColumn fx:id="hyperLink" prefWidth="176.0" text="Tiêu đề" />
                   <TableColumn fx:id="description" prefWidth="285.5999755859375" text="Nội dung" />
                   <TableColumn fx:id="source" prefWidth="137.5999755859375" text="Nguồn" />
                   <TableColumn fx:id="category" prefWidth="104.0" text="Chủ đề" />

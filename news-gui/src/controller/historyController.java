@@ -1,6 +1,9 @@
 package controller;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -9,6 +12,7 @@ import database.HistoryStorage;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -16,6 +20,7 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.Pagination;
 import javafx.scene.control.TableColumn;
@@ -69,7 +74,7 @@ public class historyController implements Initializable{
 	    public TableColumn<Article, String> source;
 
 	    @FXML
-	    public TableColumn<Article, String> title;
+	    public TableColumn<Article, Hyperlink> hyperLink;
 
 	    @FXML
 	    public Button troveButton;
@@ -110,27 +115,49 @@ public class historyController implements Initializable{
     	stage.setScene(scene);
     	stage.show();
     }
-    public void showHistoryTable(ObservableList<Article> histories) {
+    public void showHistoryTable(ObservableList<Article> later) {
         //hisTable view
     	for (int i = 0; i < histories.size(); i++) {
     		//ImageView
-    		Article article = histories.get(i);
+    		Article article = later.get(i);
     		Image image = new Image(article.image);
     		ImageView imageView = new ImageView(image);
     		// set width height
     		
-    		histories.get(i).image_view = imageView;
+    		later.get(i).image_view = imageView;
     		imageView.setFitHeight(100);
     		imageView.setFitWidth(180);
+    		//hyperlink
+    		Hyperlink myHyperLink = new Hyperlink();
+    		
+    		myHyperLink.setText(article.title);
+
+			myHyperLink.setOnAction(e -> {
+	    		URI linkURI = null;
+				try {
+					linkURI = new URI(article.link);
+				} catch (URISyntaxException e1) {
+					e1.printStackTrace();
+				}
+				try {
+					OpenLink(linkURI);
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			});
+			later.get(i).hyperLink = myHyperLink;
     	}
     	category.setCellValueFactory(new PropertyValueFactory<Article,String>("category"));
     	description.setCellValueFactory(new PropertyValueFactory<Article,String>("description"));
     	image.setCellValueFactory(new PropertyValueFactory<Article,ImageView>("image_view"));
     	source.setCellValueFactory(new PropertyValueFactory<Article,String>("source"));
-    	title.setCellValueFactory(new PropertyValueFactory<Article,String>("title"));
-    	hisTable.setItems(null);
+    	hyperLink.setCellValueFactory(new PropertyValueFactory<Article,Hyperlink>("hyperLink"));
     	hisTable.setItems(histories);
     }
+    private EventHandler<ActionEvent> OpenLink(URI url) throws IOException{
+    	Desktop.getDesktop().browse(url);
+    	return null;
+}
 
     @Override
 	public void initialize(URL url, ResourceBundle rb){
