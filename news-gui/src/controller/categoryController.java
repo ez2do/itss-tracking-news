@@ -41,7 +41,7 @@ public class categoryController implements Initializable {
     public Button addCategory;
 
     @FXML
-    public ComboBox<String> chude;
+    public TextField chude;
 
     @FXML
     public Button trove;
@@ -81,7 +81,7 @@ public class categoryController implements Initializable {
 
     @FXML
     void addSource(ActionEvent event) {
-    	CategoryStorage.addtoCategory(chude.getValue(),source.getText(), link.getText());
+    	CategoryStorage.addtoCategory(chude.getText(),source.getText(), link.getText());
     	ObservableList<Category> categories = FXCollections.observableArrayList(CategoryStorage.getCategory());
     	showCategory(categories);
     } 
@@ -122,8 +122,8 @@ public class categoryController implements Initializable {
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		//category box view
-        ObservableList<String> cateBoxContent = FXCollections.observableArrayList(CategoryStorage.getCategoryNames());
-        chude.setItems(cateBoxContent);
+//        ObservableList<String> cateBoxContent = FXCollections.observableArrayList(CategoryStorage.getCategoryNames());
+//        chude.setItems(cateBoxContent);
 		//cateTable view
         showCategory(categories);
 //    	name.setCellValueFactory(new PropertyValueFactory<categoryTable,String>("name"));
@@ -136,4 +136,3 @@ public class categoryController implements Initializable {
 	}
 
 }
-
