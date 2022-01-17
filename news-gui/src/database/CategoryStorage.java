@@ -15,11 +15,10 @@ public class CategoryStorage {
 	}
 
 
-	public static ArrayList<Category> getCategory(int page){
+	public static ArrayList<Category> getCategory(){
 		ArrayList<Category> categoryList = new ArrayList<Category>();
 		PreparedStatement ps = null; 
 	    ResultSet rs = null;
-	    int offset = (page-1)*10;
 	    String sql = "SELECT * FROM categories";
 	    try {
 		      ps = db.prepareStatement(sql); 
