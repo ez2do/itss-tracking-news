@@ -35,4 +35,4 @@ sudo systemctl status tracking-news
 
 ## Run application GUI:
 At the root folder of the project, execute gui.sh file by the command `./gui.sh`
-   
+Note: It require java with jdk version 11 at least to run
