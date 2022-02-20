@@ -1,4 +1,13 @@
-Run tracking-news service on boot:
+# Tracking news application
+
+## Description
+The application contains 2 components, the collector and the GUI.<br> 
+The collector is a background job run to collect new articles from RSS sources.<br>
+The GUI is the user interface to show articles and interact with user.<br>
+After install, set up the collector to run in background as below, 
+the collector will start running when system boot.
+
+## Run background tracking-news collector:
 1. cd /etc/systemd/system
 2. create file tracking-news.service with content:
 ```
@@ -24,5 +33,6 @@ WantedBy=multi-user.target
 Check for status:
 sudo systemctl status tracking-news
 
-
+## Run application GUI:
+At the root folder of the project, execute gui.sh file by the command `./gui.sh`
    
